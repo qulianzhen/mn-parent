@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.0.RELEASE</version>
+		<!-- relativePath是可选的,在搜索本地远程repositories之前,maven会首先搜索这个地址 -->
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.mn</groupId>
+	<artifactId>mn-parent</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<modules>
+		<module>mn-util</module>
+		<module>mn-web</module>
+		<module>mn-schedule</module>
+		<module>mn-security</module>
+	</modules>
+	<packaging>pom</packaging>
+
+	<!-- 属性集中放置，便于管理 -->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<fastjson.version>1.2.47</fastjson.version>
+	</properties>
+
+	<!-- 一些所有子模块都可能会用到的依赖，直接继承给他们 -->
+	<dependencies>
+		<!-- fastJson 解析jason -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>${fastjson.version}</version>
+		</dependency>
+	</dependencies>
+
+	<!-- spring-boot-starter-parent 父模块里面有一个pluginManagement，这里没有写版本号，其实是用了父模块中的 -->
+	<!-- 作用:添加了spring-boot-maven-plugin插件后，当运行maven打包的命令，项目会被打包成一个可以直接运行的jar包，
+    使用"java -jar"可以直接运行-->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>
