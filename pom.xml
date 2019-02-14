@@ -19,8 +19,8 @@
 	<modules>
 		<module>mn-util</module>
 		<module>mn-web</module>
-		<module>mn-schedule</module>
-		<module>mn-security</module>
+		<!--<module>mn-schedule</module>
+		<module>mn-security</module>-->
 		<module>mn-common-bean</module>
 	</modules>
 	<packaging>pom</packaging>
