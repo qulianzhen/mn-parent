@@ -18,3 +18,5 @@ spring:
       password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+#测试属性赋值
+
