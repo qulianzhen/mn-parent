@@ -19,4 +19,16 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
 
 #测试属性赋值
+person:
+  lastName: zhangsan
+  age: 20
+  boss: false
+  birth: 2018/12/12
+  mapObj: {key1: v1,key2: 12}
+  lists:
+    - lisi
+    - zhaoliu
+  dog:
+    name: 旺财
+    age: 2
 

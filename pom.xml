@@ -41,6 +41,12 @@
 			<artifactId>fastjson</artifactId>
 			<version>${fastjson.version}</version>
 		</dependency>
+		<!--  @ConfigurationProperties 绑定类  在 yml中使用时会自动提示  person .name -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
 	</dependencies>
 
 	<!-- spring-boot-starter-parent 父模块里面有一个pluginManagement，这里没有写版本号，其实是用了父模块中的 -->
