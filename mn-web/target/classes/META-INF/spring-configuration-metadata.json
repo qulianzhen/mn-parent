@@ -1,0 +1,47 @@
+{
+  "groups": [
+    {
+      "name": "person",
+      "type": "com.mn.dict.entity.po.Person",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    }
+  ],
+  "properties": [
+    {
+      "name": "person.age",
+      "type": "java.lang.Integer",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    },
+    {
+      "name": "person.birth",
+      "type": "java.util.Date",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    },
+    {
+      "name": "person.boss",
+      "type": "java.lang.Boolean",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    },
+    {
+      "name": "person.dog",
+      "type": "com.mn.dict.entity.po.Dog",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    },
+    {
+      "name": "person.last-name",
+      "type": "java.lang.String",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    },
+    {
+      "name": "person.lists",
+      "type": "java.util.List<java.lang.Object>",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    },
+    {
+      "name": "person.map-obj",
+      "type": "java.util.Map<java.lang.String,java.lang.Object>",
+      "sourceType": "com.mn.dict.entity.po.Person"
+    }
+  ],
+  "hints": []
+}

@@ -16,6 +16,8 @@
         <mybatis.spring.boot.starter.version>2.0.0</mybatis.spring.boot.starter.version>
         <druid.spring.boot.starter.version>1.1.9</druid.spring.boot.starter.version>
         <mysql.connector.java.version>8.0.11</mysql.connector.java.version>
+        <mapper.spring.boot.starter.version>2.1.5</mapper.spring.boot.starter.version>
+        <pagehelper.spring.boot.starter.version>1.2.10</pagehelper.spring.boot.starter.version>
     </properties>
 
     <dependencies>
@@ -31,6 +33,18 @@
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>${mybatis.spring.boot.starter.version}</version>
+        </dependency>
+        <!--通用Mapper -->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>${mapper.spring.boot.starter.version}</version>
+        </dependency>
+        <!-- 分页插件 -->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.spring.boot.starter.version}</version>
         </dependency>
 
         <dependency>
@@ -59,6 +73,13 @@
             <artifactId>mn-util</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- 引入common bean -->
+        <dependency>
+            <groupId>com.mn</groupId>
+            <artifactId>mn-common-bean</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
