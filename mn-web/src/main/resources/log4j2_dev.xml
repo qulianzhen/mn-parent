@@ -4,6 +4,8 @@
 <Configuration status="WARN" monitorInterval="30">
     <!-- 使用来定义常量，以便在其他配置的时候引用，该配置是可选的，例如定义日志的存放位置-->
     <Properties>
+        <!-- 如果是开发中在idea启动，则当前路径是idea的项目路径(工作空间根目录) -->
+        <!-- 如果是jar包启动? 如果是外部部署?-->
         <property name="LOG_HOME">./mnLogs</property>
         <property name="FILE_NAME">mnlog</property>
         <property name="FILE_NAME_SQL">mnSQLlog</property>
@@ -99,10 +101,6 @@
         <Async name="AsyncAppenderSql"  bufferSize="512">
             <AppenderRef ref="RollingRandomAccessFileForSql"/>
         </Async>
-
-        <RollingFile name="day_appender" >
-
-        </RollingFile>
     </Appenders>
     <Loggers>
 

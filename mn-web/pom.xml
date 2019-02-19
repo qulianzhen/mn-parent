@@ -14,7 +14,7 @@
     <!-- 属性集中放置，便于管理 -->
     <properties>
         <mybatis.spring.boot.starter.version>2.0.0</mybatis.spring.boot.starter.version>
-        <druid.spring.boot.starter.version>1.1.9</druid.spring.boot.starter.version>
+        <druid.spring.boot.starter.version>1.1.10</druid.spring.boot.starter.version>
         <mysql.connector.java.version>8.0.11</mysql.connector.java.version>
         <mapper.spring.boot.starter.version>2.1.5</mapper.spring.boot.starter.version>
         <pagehelper.spring.boot.starter.version>1.2.10</pagehelper.spring.boot.starter.version>
@@ -25,10 +25,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
             <exclusions>
-                <exclusion>
-                    <artifactId>logback-classic</artifactId>
-                    <groupId>ch.qos.logback</groupId>
-                </exclusion>
                 <exclusion>
                     <artifactId>spring-boot-starter-logging</artifactId>
                     <groupId>org.springframework.boot</groupId>
