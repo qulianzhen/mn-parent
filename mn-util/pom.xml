@@ -12,6 +12,8 @@
     <!-- 属性集中放置，便于管理 -->
     <properties>
         <commons.lang3.version>3.7</commons.lang3.version>
+        <commons.io.version>2.6</commons.io.version>
+        <commons.beanutils.version>1.9.3</commons.beanutils.version>
     </properties>
 
 
@@ -26,7 +28,13 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>${commons.io.version}</version>
+        </dependency>
+        <!-- 通用JavaBean操作有关的工具方法 -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${commons.beanutils.version}</version>
         </dependency>
     </dependencies>
 
