@@ -21,8 +21,8 @@ spring:
       #可以用： 北京时间东八区 serverTimezone=GMT%2B8   或者使用上海时间 serverTimezone=Asia/Shanghai
       #useSSL：指定是否用ssl连接
       url: jdbc:mysql://127.0.0.1:3306/mn?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
-      username: root
-      password: 123456
+      username: qlz
+      password: qlz
       driver-class-name: com.mysql.cj.jdbc.Driver
 
 #测试属性赋值
@@ -67,6 +67,8 @@ pagehelper:
   #参数的指定；如List<country> selectByPageNumSize(UserDTO user,int pageNum, int pageSize);
   support-methods-arguments: false
   params: pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero
-
+#log配置,采用log4j2
+logging:
+  config: classpath:log4j2_dev.xml
 
 
