@@ -10,44 +10,49 @@
 
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
             <property name="mappers" value="com.mn.commonbean.tkmapper.MyMapper"/>
+            <!-- 是否区分大小写，默认值 false。如果数据库区分大小写，这里就需要配置为 true，这样当表名为 USER 时，会生成 @Table(name = "USER") 注解-->
             <property name="caseSensitive" value="true"/>
-            <property name="forceAnnotation" value="true"/>
-            <property name="generateColumnConsts" value="true"/>
-            <property name="generateDefaultInstanceMethod" value="true"/>
+            <!-- 是否强制生成注解，默认 false，如果设置为 true，不管数据库名和字段名是否一致，都会生成注解（包含 @Table 和 @Column）-->
+            <property name="forceAnnotation" value="false"/>
+            <!-- 开始和结束分隔符，对于有关键字的情况下适用-->
             <property name="beginningDelimiter" value="`"/>
             <property name="endingDelimiter" value="`"/>
-            <!--使用 Data 时，Getter,Setter 无效-->
-            <property name="lombok" value="Getter,Setter,Data,ToString,Accessors,EqualsAndHashCode"/>
-            <property name="swagger" value="true"/>
+            <!-- 是否使用通用 Mapper 提供的注释工具，默认 true 使用，这样在生成代码时会包含字段的注释（目前只有 mysql 和 oracle 支持），设置 false 后会用默认的，或者你可以配置自己的注释插件-->
+            <property name="useMapperCommentGenerator" value="true"/>
+            <!-- lombok 增加 model 代码生成时，可以直接生成 lombok 的注解-->
+            <!--<property name="lombok" value="Getter,Setter,Data,ToString,Accessors"/>-->
+            <!--<property name="swagger" value="true"/>-->
         </plugin>
 
+        <!--通用代码生成器插件-->
         <!--mapper接口-->
         <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
-            <property name="targetProject" value="target/src/test/java"/>
+            <property name="targetProject" value="."/>
             <property name="targetPackage" value="test.mapper"/>
             <property name="templatePath" value="generator/mapper.ftl"/>
-            <property name="mapperSuffix" value="Dao"/>
+            <property name="mapperSuffix" value="Mapper"/>
             <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.java"/>
         </plugin>
 
         <!--mapper.xml-->
-        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="com.mn.commonbean.tkmapper.MyMapper"/>
-            <property name="caseSensitive" value="true"/>
-            <property name="forceAnnotation" value="true"/>
-            <property name="beginningDelimiter" value="`"/>
-            <property name="endingDelimiter" value="`"/>
+        <plugin type="tk.mybatis.mapper.generator.TemplateFilePlugin">
+            <property name="targetProject" value="."/>
+            <property name="targetPackage" value="test.mappers"/>
+            <property name="mapperPackage" value="test.mapper"/>
+            <property name="templatePath" value="generator/mapperXml.ftl"/>
+            <property name="mapperSuffix" value="Mapper"/>
+            <property name="fileName" value="${tableClass.shortClassName}${mapperSuffix}.xml"/>
         </plugin>
 
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
                         connectionURL="jdbc:mysql://127.0.0.1:3306/mn?serverTimezone=GMT%2B8&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false"
-                        userId="qlz"
-                        password="qlz">
+                        userId="root"
+                        password="123456">
         </jdbcConnection>
 
         <!--MyBatis 生成器只需要生成 Model-->
         <javaModelGenerator targetPackage="test.model"
-                            targetProject="target/src/test/java"/>
+                            targetProject="."/>
 
         <table tableName="sys_dict">
             <generatedKey column="id" sqlStatement="JDBC"/>

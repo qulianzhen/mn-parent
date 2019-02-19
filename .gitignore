@@ -25,3 +25,5 @@
 /.nb-gradle/
 /build/
 mn-web/target/
+mn-mbg-generator/target/
+mn-common-bean/target/

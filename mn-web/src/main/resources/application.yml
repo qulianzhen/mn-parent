@@ -47,8 +47,15 @@ mybatis:
 mapper:
   #通用mapper的所在接口名称
   mappers: com.mn.commonbean.tkmapper.MyMapper
-  #数据库类型
+  # 取回主键的方式 MYSQL: SELECT LAST_INSERT_ID()
   identity: MYSQL
+  order: AFTER   # 还可设置为 mapper.before = false ;AFTER 表示 SELECT LAST_INSERT_ID() 在insert执行之后执行,多用与自增主键
+                  #BEFORE 表示 SELECT LAST_INSERT_ID() 在insert执行之前执行，这样的话就拿不到主键了，这种适合那种主键不是自增的类型
+  not-empty: true # insertSelective 和 updateByPrimaryKeySelective 中，是否判断字符串类型 !=''
+  style: camelhumpAndLowercase # 实体和表转换时的默认规则:驼峰转下划线小写形式
+  enableMethodAnnotation: true # 是否支持（getter 和 setter）在方法上使用注解，默认false
+  enumAsSimpleType: true # 枚举类型当成基本类型对待
+
 #分页插件
 pagehelper:
   #指定类型
