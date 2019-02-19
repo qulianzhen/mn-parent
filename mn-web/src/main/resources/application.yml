@@ -60,6 +60,8 @@ pagehelper:
   #参数的指定；如List<country> selectByPageNumSize(UserDTO user,int pageNum, int pageSize);
   support-methods-arguments: false
   params: pageNum=pageNum;pageSize=pageSize;count=countSql;reasonable=reasonable;pageSizeZero=pageSizeZero
-
+#log配置,采用log4j2
+logging:
+  config: classpath:log4j2_dev.xml
 
 

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 根节点 status [trace, debug, info, warn,error ,fatal] 控制log4j2日志框架本身的日志级别 -->
+<!-- monitorInterval 每隔多少秒重新读取配置文件，可以不重启应用的情况下修改配置-->
+<Configuration status="WARN" monitorInterval="30">
+    <!-- 使用来定义常量，以便在其他配置的时候引用，该配置是可选的，例如定义日志的存放位置-->
+    <Properties>
+        <property name="LOG_HOME">./mnLogs</property>
+        <property name="FILE_NAME">mnlog</property>
+        <property name="FILE_NAME_SQL">mnSQLlog</property>
+        <property name="FILE_NAME_BS">mnBSlog</property>
+        <property name="log.sql.level">info</property>
+        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+    <!-- 输出目的地，用于定义日志输出的地方-->
+    <Appenders>
+        <!-- 控制台输出源是将日志打印到控制台上，开发的时候一般都会配置，以便调试-->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        <!-- 输出到文件 -->
+        <!--<File name="FileAppender" fileName="${LOG_HOME}/${FILE_NAME}.log">
+            <PatternLayout pattern="${LOG_PATTERN}" />
+        </File>-->
+
+        <!-- 指定当文件达到一定大小（如20MB）时，另起一个文件继续写入日志，另起一个文件就涉及到新文件的名字命名规则 -->
+        <!-- 因此需要配置文件命名规则-->
+        <!-- fileName 指定当前日志文件的位置和文件名称-->
+        <!-- filePattern 指定当发生Rolling(滚动)时，文件的转移和重命名规则-->
+        <!--    %d{HH:mm:ss.SSS} 表示输出到毫秒的时间
+                %t 输出当前线程名称
+                %-5level 输出日志级别，-5表示左对齐并且固定输出5个字符，如果不足在右边补0
+                %logger 输出logger名称，因为Root Logger没有名称，所以没有输出
+                %msg 日志文本
+                %n 换行
+
+                其他常用的占位符有：
+                %F 输出所在的类文件名，如Log4j2Test.java
+                %L 输出行号
+                %M 输出所在方法名
+                %l 输出语句所在的行数, 包括类名、方法名、文件名、行数
+          -->
+        <RollingRandomAccessFile name="RollingRandomAccessFile"
+                                 fileName="${LOG_HOME}/${FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <!-- 出发策略配置 -->
+            <!-- 这里配置了两个触发机制：-->
+            <!-- 每经过1小时或者当文件大小到达10M时，按照app-2017-08-01 12.log的格式对app.log进行重命名并归档，并生成新的文件用于写入log-->
+            <Policies>
+                <!-- 指定了基于时间的触发策略-->
+                <!-- TimeBasedTriggeringPolicy 这个配置需要和filePattern结合使用，注意filePattern中配置的文件重命名规则-->
+                <!-- 是${FILE_NAME}-%d{yyyy-MM-dd HH-mm}-%i，最小的时间粒度是mm，即分钟-->
+                <!-- 如果是${FILE_NAME}-%d{yyyy-MM-dd HH}-%i，最小的时间粒度是HH，即小时-->
+                <!-- 如果是${FILE_NAME}-%d{yyyy-MM-dd}-%i，最小的时间粒度是dd，即天     -->
+                <!-- interval: 此参数需要与filePattern结合使用，规定了触发rollover的频率，默认值为1。
+                     假设interval为4，若filePattern的date/time pattern的最小时间粒度为小时(如yyyy-MM-dd HH)，
+                     则每4小时触发一次rollover；若filePattern的date/time pattern的最小时间粒度为分钟(如yyyy-MM-dd HH-mm)，
+                     则每4分钟触发一次rollover-->
+                <!-- modulat(提示无效？):指明是否对interval进行调节，默认为false。若modulate为true，会以0为开始对interval进行偏移计算。例如，
+                     最小时间粒度为小时，当前为3:00，interval为4，则以后触发rollover的时间依次为4:00，8:00，12:00，16:00,...
+                  -->
+                <TimeBasedTriggeringPolicy interval="1" />
+                <!-- 指定了基于文件大小的触发策略-->
+                <!-- SizeBasedTriggeringPolicy 指定当文件体积大于size指定的值时，触发Rolling (KB、MB、GB等)-->
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <!--DefaultRolloverStrategy  指定最多保存的文件个数 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+
+        <!-- 定义了一个专门打印sql的-->
+        <RollingRandomAccessFile name="RollingRandomAccessFileForSql"
+                                 fileName="${LOG_HOME}/${FILE_NAME_SQL}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME_SQL}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulat="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+        <!-- 定义了一个专门打印业务mn的-->
+        <RollingRandomAccessFile name="RollingRandomAccessFileForBS"
+                                 fileName="${LOG_HOME}/${FILE_NAME_BS}.log"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME_BS}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulat="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingRandomAccessFile>
+
+        <!-- 发现Async 好像PatternLayout的输出格式配置的和输出的格式不一样，不用异步就完全一样  -->
+        <!-- 异步，需要通过AppenderRef来指定要对哪种输出源进行异步（一般用于配置RollingRandomAccessFile） -->
+        <Async name="AsyncAppender"  bufferSize="512">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </Async>
+        <Async name="AsyncAppenderSql"  bufferSize="512">
+            <AppenderRef ref="RollingRandomAccessFileForSql"/>
+        </Async>
+
+        <RollingFile name="day_appender" >
+
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+
+        <Logger name="com.mn" level="INFO" additivity="false">
+            <AppenderRef ref="RollingRandomAccessFileForBS" />
+            <AppenderRef ref="Console" />
+        </Logger>
+
+        <Logger name="org.mybatis" level="DEBUG"  additivity="true">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </Logger>
+
+        <Root level="info">
+            <AppenderRef ref="RollingRandomAccessFile" />
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

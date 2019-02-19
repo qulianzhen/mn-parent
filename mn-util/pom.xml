@@ -38,5 +38,20 @@
         </dependency>
     </dependencies>
 
+    <!-- 一旦Maven项目有变化，发生自动的update时,模块的LanguageLevel和JavaCompiler都变成1.5-->
+    <!-- 除非继承了mn-parent，因为parent中已经制定了编译器版本-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
