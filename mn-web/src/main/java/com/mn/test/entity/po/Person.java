@@ -1,4 +1,4 @@
-package com.mn.dict.entity.po;
+package com.mn.test.entity.po;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

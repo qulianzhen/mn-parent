@@ -1,5 +1,6 @@
 package com.mn.system.security;
 
+import com.mn.mnutil.JwtUtil;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -8,12 +9,10 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.mn.mnutil.JwtUtil;
 
 public class MyRealm  extends AuthorizingRealm{
-    @Autowired
-    private SysUserService sysUserService;
+    //@Autowired
+    //private SysUserService sysUserService;
 
     /**
      * 必须重写此方法，不然Shiro会报错
@@ -29,7 +28,7 @@ public class MyRealm  extends AuthorizingRealm{
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String username = JwtUtil.getUsername(principals.toString());
-        SysUser user = sysUserService.findByUserName(username);
+        //SysUser user = sysUserService.findByUserName(username);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         return simpleAuthorizationInfo;
     }
@@ -46,14 +45,14 @@ public class MyRealm  extends AuthorizingRealm{
             throw new AuthenticationException("token无效");
         }
 
-        SysUser userBean = sysUserService.findByUserName(username);
+        /*SysUser userBean = sysUserService.findByUserName(username);
         if (userBean == null) {
             throw new AuthenticationException("用户不存在!");
         }
 
         if (!JwtUtil.verify(token, username, userBean.getPassword())) {
             throw new AuthenticationException("用户名或密码错误");
-        }
+        }*/
 
         return new SimpleAuthenticationInfo(token, token, "my_realm");
     }

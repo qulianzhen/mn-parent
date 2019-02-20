@@ -1,4 +1,4 @@
-package com.mn.dict.entity.po;
+package com.mn.test.entity.po;
 
 /**
  * @Description: (描述)
