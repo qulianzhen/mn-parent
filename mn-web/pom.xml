@@ -18,6 +18,7 @@
         <mysql.connector.java.version>8.0.11</mysql.connector.java.version>
         <mapper.spring.boot.starter.version>2.1.5</mapper.spring.boot.starter.version>
         <pagehelper.spring.boot.starter.version>1.2.10</pagehelper.spring.boot.starter.version>
+        <springfox.swagger2.version>2.8.0</springfox.swagger2.version>
     </properties>
 
     <dependencies>
@@ -103,6 +104,17 @@
             <groupId>com.mn</groupId>
             <artifactId>mn-common-bean</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- swagger依赖 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox.swagger2.version}</version>
         </dependency>
 
         <dependency>

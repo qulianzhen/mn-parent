@@ -76,7 +76,7 @@
                                  filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME_SQL}-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
-                <TimeBasedTriggeringPolicy interval="1" modulat="true"/>
+                <TimeBasedTriggeringPolicy interval="1" />
                 <SizeBasedTriggeringPolicy size="10MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20"/>
@@ -87,7 +87,7 @@
                                  filePattern="${LOG_HOME}/$${date:yyyy-MM}/${FILE_NAME_BS}-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
-                <TimeBasedTriggeringPolicy interval="1" modulat="true"/>
+                <TimeBasedTriggeringPolicy interval="1" />
                 <SizeBasedTriggeringPolicy size="10MB"/>
             </Policies>
             <DefaultRolloverStrategy max="20"/>
@@ -109,10 +109,31 @@
             <AppenderRef ref="Console" />
         </Logger>
 
-        <Logger name="org.mybatis" level="DEBUG"  additivity="true">
+        <Logger name="org.mybatis" level="DEBUG"  additivity="false">
             <AppenderRef ref="AsyncAppenderSql" />
             <AppenderRef ref="Console" />
         </Logger>
+        <!-- 不支持通配符包名，是否可以模仿logback自定义过滤器？ 这里暂时只能把模块都配置一遍-->
+        <logger name="com.mn.common.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
+        <logger name="com.mn.dict.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
+        <logger name="com.mn.menu.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
+        <logger name="com.mn.student.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
+        <logger name="com.mn.test.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
 
         <Root level="info">
             <AppenderRef ref="RollingRandomAccessFile" />
