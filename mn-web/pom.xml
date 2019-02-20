@@ -19,6 +19,8 @@
         <mapper.spring.boot.starter.version>2.1.5</mapper.spring.boot.starter.version>
         <pagehelper.spring.boot.starter.version>1.2.10</pagehelper.spring.boot.starter.version>
         <springfox.swagger2.version>2.8.0</springfox.swagger2.version>
+        <jwt.version>3.4.0</jwt.version>
+        <shiro.spring.version>1.4.0</shiro.spring.version>
     </properties>
 
     <dependencies>
@@ -115,6 +117,19 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox.swagger2.version}</version>
+        </dependency>
+
+        <!--JWT-->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+        <!-- shiro -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>${shiro.spring.version}</version>
         </dependency>
 
         <dependency>
