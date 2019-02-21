@@ -16,6 +16,7 @@
         <commons.io.version>2.6</commons.io.version>
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
         <jwt.version>3.4.0</jwt.version>
+        <freemarker.version>2.3.16</freemarker.version>
     </properties>
 
 
@@ -43,6 +44,12 @@
             <groupId>com.auth0</groupId>
             <artifactId>java-jwt</artifactId>
             <version>${jwt.version}</version>
+        </dependency>
+        <!-- freeMarker -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
         </dependency>
     </dependencies>
 
