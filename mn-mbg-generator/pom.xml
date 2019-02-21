@@ -7,6 +7,7 @@
     <groupId>com.mn</groupId>
     <artifactId>mn-mbg-generator</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>通用Mapper的MBG项目</description>
 
     <properties>
         <mysql.connector.java.version>8.0.11</mysql.connector.java.version>

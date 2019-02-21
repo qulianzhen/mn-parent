@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>mn-web</artifactId>
+    <description>核心web项目</description>
 
     <!-- 属性集中放置，便于管理 -->
     <properties>

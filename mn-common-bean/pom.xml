@@ -7,6 +7,7 @@
     <groupId>com.mn</groupId>
     <artifactId>mn-common-bean</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <description>公共Bean项目</description>
     <properties>
         <mapper.spring.boot.starter.version>2.1.5</mapper.spring.boot.starter.version>
     </properties>
