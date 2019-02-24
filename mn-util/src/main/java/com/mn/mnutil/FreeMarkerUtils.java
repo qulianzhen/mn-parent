@@ -38,8 +38,8 @@ public class FreeMarkerUtils {
             try {  
                 appPath = applicationPath;  
                 // 加载模版  
-                File file = new File(new StringBuffer(appPath).append(File.separator).toString());  
-                // 设置要解析的模板所在的目录，并加载模板文件  
+                File file = new File(new StringBuffer(appPath).append(File.separator).toString());
+                // 设置要解析的模板所在的目录，并加载模板文件
                 config.setDirectoryForTemplateLoading(file);  
                 // 设置文件编码为UTF-8  
                 config.setEncoding(Locale.getDefault(), ENCODING);  

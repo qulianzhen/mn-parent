@@ -15,30 +15,27 @@ import java.util.List;
  */
 public interface TableDao extends BaseDao<BuliderColumn>{
 	/**
-	 * 根据数据库名得到数据库字段和类型信息（orcl）
+	 * 根据数据库名得到数据库字段和类型信息
 	 * @param tableName
-	 * @param owner
 	 * @param schemaName
 	 * @return
 	 */
-	List<BuliderColumn> getColumnMessByTabelName(String tableName, String owner, String schemaName) throws Exception;
+	List<BuliderColumn> getColumnMessByTabelName(String tableName,String schemaName) throws Exception;
 
 	/**
 	 * 通过表名和所有者得到表的主键
 	 * @param tableName
-	 * @param owner
 	 * @param schemaName
 	 * @return
 	 */
-	String getPkByTableName(String tableName, String owner, String schemaName)throws Exception;
+	String getPkByTableName(String tableName, String schemaName)throws Exception;
 
 	/**
 	 * 通过表名和所有者得到表描述信息
 	 * @param tableName
-	 * @param owner
 	 * @param schemaName
 	 * @return
 	 */
-	String getTableDesc(String tableName, String owner, String schemaName);
+	String getTableDesc(String tableName, String schemaName);
 
 }

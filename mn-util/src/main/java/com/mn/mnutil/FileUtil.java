@@ -267,12 +267,8 @@ public class FileUtil {
                     resultList = getAllPath(resultList,rootPath,currentFile.getAbsolutePath());
                 }else{
                     String absPath = currentFile.getAbsolutePath();
-                    String packagePath = absPath.replace(rootPath+"\\", "").replace("\\", ".").replace(currentFile.getName(), "");
-                    if(packagePath.endsWith(".")){
-                        packagePath = packagePath.substring(0, packagePath.length()-1);
-                    }
                     String relativeFtlPath = "/" + absPath.replace(rootPath+"\\", "").replace("\\", "/");
-                    resultList.add(packagePath + ";"  + relativeFtlPath);
+                    resultList.add(currentFile.getName() +";"+ relativeFtlPath);
                 }
             }
         }

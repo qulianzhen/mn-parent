@@ -138,6 +138,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
         }
         RowMapper<T> rowMapper = (RowMapper<T>) BeanPropertyRowMapper
                 .newInstance(T.getClass());
+        Object a = jdbcTemplate.getDataSource();
         return jdbcTemplate.query(sql.toString(), args, rowMapper);
     }
 
@@ -205,7 +206,7 @@ public class BaseDaoImpl<T> implements BaseDao<T> {
      * 带条件的 纯sql 获取 总数
      */
     public int getCount(String sql, Object... param) throws Exception {
-        int count = jdbcTemplate.queryForInt(sql, param);
+        int count = jdbcTemplate.queryForObject(sql, param,int.class);
         return count;
     }
 

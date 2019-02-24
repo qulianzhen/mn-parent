@@ -1,29 +1,18 @@
 package com.mn.server;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
+import com.mn.dao.TableDao;
+import com.mn.entity.BuilderConfig;
+import com.mn.entity.BuliderColumn;
+import com.mn.entity.ColumnTransformTypeEnum;
+import com.mn.entity.DbTypeEnum;
+import com.mn.mnutil.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import com.mn.dao.TableDao;
-import com.mn.entity.BuliderColumn;
-import com.mn.utils.ComputerInfoUtil;
-import com.mn.utils.FileUtil;
-import com.mn.utils.FreeMarkerUtils;
-import com.mn.utils.PropertiesTools2;
-import com.mn.utils.PropertiesUtil;
-import com.mn.utils.StringTools;
+import javax.annotation.Resource;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @ClassName:     TableService.java
@@ -35,9 +24,14 @@ import com.mn.utils.StringTools;
  */
 @Service
 public class TableService {
-	@Resource(name = "tableDao")
-	private TableDao tableDao;
-	
+	private String dbConfigFilePath = "/config/dbconfig.properties";//数据库配置文件
+	private String filedTypeCfgPath = "/config/fieldTypeCfg.properties";//字段类型与bean属性类型对应关系配置
+
+	@Resource(name = "mySqlDao")
+	private TableDao mySqlDao;
+	@Resource(name = "orclDao")
+	private TableDao orclDao;
+
 	/**
 	 * 生成代码服务
 	 * @param tableName  表名
@@ -46,12 +40,12 @@ public class TableService {
 	 * @param author     作者
 	 * @param ignoreBeanProperty 忽略的字段
 	 * @param packagePath 包路径
-	 */
+	 *//*
 	public void bulideCodes(String tableName,String entityName,String toPlace,String author,String[] ignoreBeanProperty,String packagePath,String[] swaggerDataModelIgnoreProp){
-		String dbUrl = PropertiesTools2.getFileIO("url", "/dbconfig.properties");
+		String dbUrl = PropertiesUtil.getFileIO("url", dbConfigFilePath);
+		String initPath = "codeTemplate/example";
 		String tblSchema = dbUrl.substring(dbUrl.lastIndexOf("/")+1, dbUrl.indexOf("?"));//方案名--对应mysql的数据库名
 		
-		String initPath = "codeTemplate";//FTL模板所在主目录
 		//构造数据
 		Map<String,Object> m = new HashMap<String,Object>();
 		
@@ -66,13 +60,13 @@ public class TableService {
 				pkField = t;
 			}
 			//得到驼峰写法的成员变量名
-			//t.setFieldName(StringTools.getTF(t.getColumnName()));
+			t.setFieldName(StringUtil.getTF(t.getColumnName()));
 			//字段原名
-			t.setFieldName(t.getColumnName());
+			//t.setFieldName(t.getColumnName());
 			//得到java类型
 			t.setJavaType(getJavaTypeByColumnType(t.isShiPk(),t.getDataType()));
 			//得到java短类型
-			t.setSimpleJavaType(StringTools.getSimpleName(t.getJavaType()));
+			t.setSimpleJavaType(StringUtil.getSimpleName(t.getJavaType()));
 			//java.lang.包不需要引入
 			if(!t.getJavaType().startsWith("java.lang.")){
 				needImportPacageSet.add(t.getJavaType());
@@ -103,8 +97,9 @@ public class TableService {
 		
 		
 		//初始化Freemarker工具类，指定模板文件base路径
-		FreeMarkerUtils.initFreeMarker(initPath);
-		List<String> pathList = FileUtil.getAllPath(null,null,initPath);
+		String realInitPath = TableService.class.getClassLoader().getResource(initPath).getPath();
+		FreeMarkerUtils.initFreeMarker(realInitPath);
+		List<String> pathList = FileUtil.getAllPath(null,null,realInitPath);
 		String[] pathArry = null;
 		for(String path : pathList){
 			pathArry = path.split(";");
@@ -112,6 +107,116 @@ public class TableService {
 		}
 		
 		
+		//开始生成
+		*//*-------------------------------------------------------------------------------------------*//*
+		*//*-------------------------------------生成代码Start------------------------------------------*//*
+		//FreeMarkerUtils.crateFile(m, "/entity/entity.ftl", toPlace + getCodePath(rootPath,entityName,"entity",".java"), true);
+		*//*FreeMarkerUtils.crateFile(m, "/dao/mapper.ftl", toPlace  + getCodePath(rootPath,entityName,"dao","Mapper.java"), true);
+		FreeMarkerUtils.crateFile(m, "/controller/controller.ftl", toPlace + getCodePath(rootPath,entityName,"controller","Controller.java"), true);
+		FreeMarkerUtils.crateFile(m, "/service/service.ftl", toPlace + getCodePath(rootPath,entityName,"service","Service.java"), true);
+		FreeMarkerUtils.crateFile(m, "/service/serviceImpl.ftl", toPlace + getCodePath(rootPath,entityName,"service/impl","ServiceImpl.java"), true);
+		FreeMarkerUtils.crateFile(m, "/mybatis/mybatis.ftl", toPlace + getCodePath(rootPath,entityName,"mybatis","Mapper.xml"), true);
+		FreeMarkerUtils.crateFile(m, "/vo/queryVo.ftl", toPlace + getCodePath(rootPath,entityName,"vo","QueryVo.java"), true);*//*
+	}*/
+
+
+	/**
+	 * 生成代码服务
+	 * @param config  配置类
+	 */
+	public void bulideCodes(BuilderConfig config){
+		//模板所在路径
+		String initPath = config.getFtlLocationPath();
+		//查询数据库表信息的时候，有时候为了避免跟其他“方案schema”冲突，所以需要这么一个标识条件
+		//在mysql中可以用数据库的名称来充当条件，在oracle中可以通过登录用户名来充当（user和schema的关系请自行查询）
+		String tblSchema = "";
+		TableDao tableDao = null;
+		if(config.getDbType().equals(DbTypeEnum.mysql)){
+			String dbUrl = PropertiesUtil.getFileIO("url", dbConfigFilePath);
+			tblSchema = dbUrl.substring(dbUrl.lastIndexOf("/")+1, dbUrl.indexOf("?"));//方案名--对应mysql的数据库名
+			tableDao = mySqlDao;
+		}else if(config.getDbType().equals(DbTypeEnum.oracle)){
+			tblSchema = PropertiesUtil.getFileIO("username",dbConfigFilePath);
+			tableDao = orclDao;
+		}else{
+			throw new RuntimeException("未支持的数据库，请检查config中的dbType");
+		}
+
+		String[] tableNames = config.getTableNames();
+		String[] entityNames = config.getEntityNames();
+		if(tableNames.length != entityNames.length){
+			throw new RuntimeException("表名的数量要和实体类的数量一致!");
+		}
+		for(int i=0,len = tableNames.length;i<len;i++){
+			String tableName = tableNames[i];
+			String entityName = entityNames[i];
+
+			//构造数据
+			Map<String,Object> ftlDataMap = new HashMap<>();
+
+			Set<String> needImportPacageSet = new HashSet<String>();//需要导入的包
+			List<BuliderColumn> allColumns = getColumnMessByTabelName(tableName,tblSchema,tableDao);//属性-列名  集合
+			String pk = getPkByTableName(tableName,tblSchema,tableDao);//注意，本生成器只是支持单主键！
+			BuliderColumn pkField = null;//主键信息
+			for(int j=0,jLen=allColumns.size();j<jLen;j++){
+				BuliderColumn currentColumn = allColumns.get(j);
+				if(!StringUtils.isEmpty(pk) && currentColumn.getColumnName().equals(pk)){
+					currentColumn.setShiPk(true);//设置主键
+					pkField = currentColumn;
+				}
+				//得到驼峰写法的成员变量名 或者直接原样
+				currentColumn.setFieldName(config.getColumnTrans().equals(ColumnTransformTypeEnum.tf)?StringUtil.getTF(currentColumn.getColumnName()):currentColumn.getColumnName());
+				//得到java类型--在这里，主键所生成的java类型是单独制定的！
+				currentColumn.setJavaType(getJavaTypeByColumnType(currentColumn.isShiPk(),currentColumn.getDataType()));
+				//得到java短类型
+				currentColumn.setSimpleJavaType(StringUtil.getSimpleName(currentColumn.getJavaType()));
+				//java.lang.包不需要引入
+				if(!currentColumn.getJavaType().startsWith("java.lang.")){
+					needImportPacageSet.add(currentColumn.getJavaType());
+				}
+				currentColumn.setJdbcType(getJdbcTypeByJavaType(currentColumn.getSimpleJavaType()));
+			}
+
+			List<BuliderColumn> entityproPertyIgnoreDelList = getListIgnoreDel(allColumns,config.getIgnoreBeanProperty());
+
+			ftlDataMap.put("tableName", tableName);
+			ftlDataMap.put("columnList", allColumns);
+			ftlDataMap.put("entityName", entityName);
+			ftlDataMap.put("userName",ComputerInfoUtil.getPcName());
+			ftlDataMap.put("currentTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			ftlDataMap.put("needImportPacageSet", needImportPacageSet);
+			ftlDataMap.put("pkField", pkField);
+			ftlDataMap.put("tableDesc", getTableDesc(tableName,tblSchema,tableDao));
+			ftlDataMap.put("author", config.getAuthor());
+			ftlDataMap.put("version", config.getVersion());
+			ftlDataMap.put("entityproPertyIgnoreDel", entityproPertyIgnoreDelList);
+			//ftlDataMap.put("rootPath", packagePath); // "com.jfb.active.kj";
+			//ftlDataMap.put("businesspckPath", packagePath.replace("com.jfb.", ""));  //"active.kj";
+			//ftlDataMap.put("businesspckPathX", packagePath.replace("com.jfb.", "").replace(".", "/"));  //"active/kj";
+			List<String> swaggerDataModelIgnorePropList = new ArrayList<>();
+			if(config.getSwaggerDataModelIgnoreProp() != null && config.getSwaggerDataModelIgnoreProp().length!=0){
+				swaggerDataModelIgnorePropList = Arrays.asList(config.getSwaggerDataModelIgnoreProp());
+			}
+			ftlDataMap.put("generateLombokAnnotation",config.isGenerateLombokAnnotation());//是否生成Lombok注解
+			ftlDataMap.put("generateSwaggerAnnotation",config.isGenerateSwaggerAnnotation());//是否生成swagger注解
+			ftlDataMap.put("swaggerProIgnore", swaggerDataModelIgnorePropList);//swagger注解忽略的字段
+
+			Map<String,String> ftlVsFilePathMap = config.getFtlVsFilePathMap();
+			ftlDataMap.put("javaPackagesMap",ftlVsFilePathMap);
+
+
+			//初始化Freemarker工具类，指定模板文件base路径
+			String realInitPath = TableService.class.getClassLoader().getResource(initPath).getPath();
+			FreeMarkerUtils.initFreeMarker(realInitPath);
+			List<String> pathList = FileUtil.getAllPath(null,null,realInitPath);
+			String[] pathArray = null;
+			for(String path : pathList){
+				pathArray = path.split(";"); //0-文件名，1-模板的实际路径
+				ftlDataMap.put("currentFilePkg",ftlVsFilePathMap.get(pathArray[0]));//本文件的包路径,如 [java].ftl====> com.mn.dict.entity.po
+				FreeMarkerUtils.crateFile(ftlDataMap, pathArray[1], config.getToPlace() + getCodePath(ftlVsFilePathMap.get(pathArray[0]),entityName,getSuffix(pathArray[1]),pathArray[1]), true);
+			}
+
+		}
 		//开始生成
 		/*-------------------------------------------------------------------------------------------*/
 		/*-------------------------------------生成代码Start------------------------------------------*/
@@ -123,6 +228,7 @@ public class TableService {
 		FreeMarkerUtils.crateFile(m, "/mybatis/mybatis.ftl", toPlace + getCodePath(rootPath,entityName,"mybatis","Mapper.xml"), true);
 		FreeMarkerUtils.crateFile(m, "/vo/queryVo.ftl", toPlace + getCodePath(rootPath,entityName,"vo","QueryVo.java"), true);*/
 	}
+
 
 
 
@@ -169,15 +275,14 @@ public class TableService {
 	
 	/**
 	 * 通过表名和所有者得到表所有字段信息
-	 * @param tableName
-	 * @param owner 所有者
+	 * @param tableName 表名
 	 * @param schemaName 方案名
 	 * @return
 	 */
-	public List<BuliderColumn> getColumnMessByTabelName(String tableName,String owner,String schemaName){
+	public List<BuliderColumn> getColumnMessByTabelName(String tableName,String schemaName,TableDao tableDao){
 		List<BuliderColumn> l = null;
 		try{
-			l = tableDao.getColumnMessByTabelName(tableName,owner,schemaName);
+			l = tableDao.getColumnMessByTabelName(tableName,schemaName);
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("通过表名和所有者得到表所有字段信息执行查询出错！"+e.getMessage());
@@ -186,16 +291,15 @@ public class TableService {
 	}
 
 	/**
-	 * 通过表名和所有者得到表的主键
+	 * 通过表名和方案名得到表的主键
 	 * @param tableName
-	 * @param owner
 	 * @param schemaName
 	 * @return
 	 */
-	public String getPkByTableName(String tableName,String owner,String schemaName){
+	public String getPkByTableName(String tableName,String schemaName,TableDao tableDao){
 		String pk = "";
 		try{
-			pk = tableDao.getPkByTableName(tableName,owner,schemaName);
+			pk = tableDao.getPkByTableName(tableName,schemaName);
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("通过表名和所有者得到表的主键执行查询出错！"+e.getMessage());
@@ -206,14 +310,13 @@ public class TableService {
 	/**
 	 * 得到表描述信息
 	 * @param tableName
-	 * @param owner
 	 * @param schemaName
 	 * @return
 	 */
-	public String getTableDesc(String tableName, String owner,String schemaName) {
+	public String getTableDesc(String tableName, String schemaName,TableDao tableDao) {
 		String desc = "";
 		try{
-			desc = tableDao.getTableDesc(tableName,owner,schemaName);
+			desc = tableDao.getTableDesc(tableName,schemaName);
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new RuntimeException("通过表名和所有者得到表的描述信息出错！"+e.getMessage());
@@ -232,15 +335,15 @@ public class TableService {
 		if(isShiPk){
 			dataType = "PK";
 		}
-		String fieldType = PropertiesUtil.get(dataType.toUpperCase());
+		String fieldType = PropertiesUtil.getFileIO(dataType.toUpperCase(),filedTypeCfgPath);
 		if(fieldType == null){
-			fieldType = PropertiesUtil.get("DEFAULT");
+			fieldType = PropertiesUtil.getFileIO("DEFAULT",filedTypeCfgPath);
 		}
 		return fieldType;
 	}
 	
 	/**
-	 * 通过java类型得到jdbc类型,mybatis中用
+	 * 通过java类型得到jdbc类型,mybatis中用  --这里暂时没有使用配置文件，写死了！
 	 * @param simpleJavaType
 	 * @return
 	 */
@@ -264,45 +367,19 @@ public class TableService {
 	 * 计算最后的生成路径【需要根据项目结构自定义】
 	 * @param rootPath   
 	 * @param entityName 实体类名
-	 * @param subPath    
 	 * @param houzhui
 	 * @return
 	 */
-	private String getCodePath(String rootPath, String entityName,String subPath,String houzhui,String fileSource) {
+	private String getCodePath(String rootPath, String entityName,String houzhui,String fileSource) {
 		fileSource = fileSource.replace(".ftl", "");
 		if(fileSource.indexOf("[")!=-1 && fileSource.indexOf("]")!=-1){
 			fileSource = fileSource.substring(0,fileSource.indexOf("[")) + fileSource.substring(fileSource.indexOf("]")+1, fileSource.length());
 		}
-		
 		int subStr = fileSource.lastIndexOf("/");
 		if(subStr != -1){
 			fileSource = fileSource.substring(subStr+1 , fileSource.length());
 		}
-		
-		String entityName2 = (entityName.charAt(0)+"").toLowerCase() + entityName.substring(1, entityName.length());//首字母小写
-		if(subPath!=null && !"".equals(subPath)){
-			subPath = subPath+ File.separator;
-		}else{
-			subPath = "";
-		}
-		
-		if(fileSource.equals("")){//实体类Entity
-			rootPath = "model" +File.separator + rootPath.replace("com.jfb.", "").replace(".", File.separator) + File.separator  + entityName+ fileSource +houzhui;
-		}else if(fileSource.equals("Search")){
-			rootPath = "search" +File.separator + rootPath.replace("com.jfb.", "").replace(".", File.separator) + File.separator  + entityName+ fileSource +houzhui;
-		}else if(fileSource.equals("Mapper")){
-			rootPath = "mapper" +File.separator + rootPath.replace("com.jfb.", "").replace(".", File.separator) + File.separator + entityName+ fileSource +houzhui;
-		}else if(fileSource.equals("Controller")){
-			rootPath = rootPath.replace(".", File.separator) + File.separator +  "controllers" +File.separator+ entityName+fileSource +houzhui;
-		}else if(fileSource.equals("Service")){
-			rootPath = rootPath.replace(".", File.separator) + File.separator +  "service" + File.separator+ entityName+fileSource +houzhui;
-		}else if(fileSource.equals("ServiceImpl")){
-			rootPath = rootPath.replace(".", File.separator) + File.separator +  "service"+File.separator+"impl" + File.separator+ entityName+ fileSource +houzhui;
-		}else{
-			rootPath = rootPath.replace(".", File.separator) +File.separator+  fileSource +houzhui;
-		}
-		
-		//rootPath = rootPath.replace(".", File.separator) +File.separator + subPath + entityName2 + File.separator + entityName+  fileSource +houzhui;
-		return rootPath;
+		String targetPath = File.separator + rootPath.replaceAll("\\.","\\\\") + File.separator  + entityName+ fileSource +houzhui;
+		return targetPath;
 	}
 }

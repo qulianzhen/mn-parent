@@ -22,6 +22,7 @@
         <springfox.swagger2.version>2.8.0</springfox.swagger2.version>
         <jwt.version>3.4.0</jwt.version>
         <shiro.spring.version>1.4.0</shiro.spring.version>
+        <com.mn.version>1.0-SNAPSHOT</com.mn.version>
     </properties>
 
     <dependencies>
@@ -100,13 +101,13 @@
         <dependency>
             <groupId>com.mn</groupId>
             <artifactId>mn-util</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${com.mn.version}</version>
         </dependency>
         <!-- 引入common bean -->
         <dependency>
             <groupId>com.mn</groupId>
             <artifactId>mn-common-bean</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${com.mn.version}</version>
         </dependency>
         <!-- swagger依赖 -->
         <dependency>
