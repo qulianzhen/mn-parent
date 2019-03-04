@@ -26,7 +26,7 @@ public class CodeBuilderApplication {
 		String version = "v1.0";//版本*/
 
 
-		String modelName = "dict";
+		String modelName = "permission";
 
 		Map<String,String> ftlVsFilePath = new HashMap<>();
 		//ftlVsFilePath.put("Controller[java].ftl","com.mn."+modelName+".controller");
@@ -41,8 +41,8 @@ public class CodeBuilderApplication {
 		config.setFtlVsFilePathMap(ftlVsFilePath);
 
 
-		config.setTableNames(new String[]{"sys_dict_item"});
-		config.setEntityNames(new String[]{"SysDictItem"});
+		config.setTableNames(new String[]{"sys_user"});
+		config.setEntityNames(new String[]{"SysUser"});
 		config.setIgnoreBeanProperty(new String[]{});
 		config.setSearchColumns(new String[]{});
 

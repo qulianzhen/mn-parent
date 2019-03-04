@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysUser">
+    <!-- 根据用户登录名获得url权限集合 -->
+    <select id="getUrlPermitByUserName" parameterType="String" resultType="String">
+        SELECT PERMIT_URL
+        FROM sys_permit
+        WHERE PERMIT_TYPE = 0
+        AND id IN (
+            SELECT PREMIT_ID
+            FROM sys_role_permit
+            WHERE ROLE_ID IN (
+                    SELECT ROLE_ID
+                    FROM sys_user_role
+                    WHERE USER_ID = ( SELECT id FROM sys_user WHERE USER_NAME = #{0})
+                )
+        )
+        UNION
+            SELECT MENU_URL  PERMIT_URL
+        FROM sys_menu
+        WHERE MENU_ENABLE = 1 and MENU_URL is not null
+        AND id IN (
+            SELECT PREMIT_ID
+            FROM sys_role_permit
+            WHERE ROLE_ID IN (
+                    SELECT ROLE_ID
+                    FROM sys_user_role
+                    WHERE USER_ID = (SELECT id FROM sys_user WHERE USER_NAME = #{0})
+                )
+    </select>
+
+</mapper>
