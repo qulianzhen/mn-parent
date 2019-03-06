@@ -1,8 +1,6 @@
 package com.mn.commonbean.exception;
 
 
-import com.mn.mnutil.MessageUtil;
-
 /**
  * 业务异常--提供详细异常码的异常（如，110010 - 砍价活动已开启，不能执行编辑操作!）
  * @author qlz
@@ -16,7 +14,7 @@ public class BusinessCodeException extends BusinessException {
 	private Integer code;
 	
 	public BusinessCodeException(Integer code) {
-		super("["+code+"]:"+MessageUtil.codeMsgMap.get(code));
+		super("["+code+"]:"+ CodeMsgInfo.codeMsgMap.get(code));
 		this.code = code;
 	}
 

@@ -26,8 +26,8 @@ spring:
       #可以用： 北京时间东八区 serverTimezone=GMT%2B8   或者使用上海时间 serverTimezone=Asia/Shanghai
       #useSSL：指定是否用ssl连接
       url: jdbc:mysql://127.0.0.1:3306/mn?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
-      username: qlz
-      password: qlz
+      username: root
+      password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver
       initial-size: 5 #初始化连接数 5 -官网推荐（还需要结合服务器性能）
       min-idle: 10  #最小  去除了混淆的概念，就相当于最小连接数

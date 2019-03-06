@@ -1,8 +1,10 @@
 package com.mn.system.security;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mn.commonbean.restful.Message;
+import com.mn.mnutil.MessageUtil;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,7 +25,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
     private static String LOGIN_SIGN = "Authorization";
 
     /**
-     * 检测用户是否登录
+     * 检测用户是否登录?? 是否需要登录？ header中没有这个token，就需要登录
      * 检测header里面是否包含Authorization字段即可
      *
      * @param request
@@ -38,7 +40,7 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
 
     }
     /**
-     * 执行登录认证
+     * 执行登录认证  （具体的登录校验）
      *
      * @param request
      * @param response
@@ -101,15 +103,25 @@ public class JwtFilter extends BasicHttpAuthenticationFilter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         Subject subject = getSubject(request, response);
         if(subject.getPrincipal() == null){
-            saveRequestAndRedirectToLogin(request, response);
+            //saveRequestAndRedirectToLogin(request, response);
+            Message msg = MessageUtil.codeMsg(401);
+            ((HttpServletResponse) response).setHeader("Content-Type", "text/html;charset=UTF-8");//这句话是解决乱码的
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(JSONObject.toJSONString(msg));
         }else{
-            String unauthorizedUrl = getUnauthorizedUrl();
+            /*String unauthorizedUrl = getUnauthorizedUrl();
             //如果请求为ajax请求或者没有配置无权限页面，则不跳转到无权限页面，而是返回错误状态码401，让前台知道是无权限错误
             if(StringUtils.hasText(unauthorizedUrl) && httpRequest.getHeader("x-requested-with") == null){
                 WebUtils.issueRedirect(request, response, unauthorizedUrl);
             }else{
                 WebUtils.toHttp(response).sendError(401);
-            }
+            }*/
+
+            //由于这里采用前后端分离，所以，只存在ajax请求
+            Message msg = MessageUtil.errorMsg(401);
+            response.setCharacterEncoding("UTF-8");
+            ((HttpServletResponse) response).setHeader("Content-Type", "text/html;charset=UTF-8");//这句话是解决乱码的
+            response.getWriter().write(JSONObject.toJSONString(msg));
         }
         return false;
     }

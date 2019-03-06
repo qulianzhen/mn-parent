@@ -68,4 +68,9 @@ public class MyRealm  extends AuthorizingRealm{
 
         return new SimpleAuthenticationInfo(token, token, getName());
     }
+
+    @Override
+    public String getName() {
+        return "myRealm";
+    }
 }

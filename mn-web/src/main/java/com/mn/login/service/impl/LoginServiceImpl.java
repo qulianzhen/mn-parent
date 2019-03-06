@@ -3,6 +3,7 @@ package com.mn.login.service.impl;
 import com.mn.commonbean.exception.BusinessIncorrectException;
 import com.mn.commonbean.exception.BusinessInvalidParamException;
 import com.mn.login.service.LoginService;
+import com.mn.mnutil.JwtUtil;
 import com.mn.mnutil.StringUtil;
 import com.mn.permission.entity.po.SysUser;
 import com.mn.permission.service.SysUserService;
@@ -38,6 +39,6 @@ public class LoginServiceImpl implements LoginService {
             throw new BusinessIncorrectException("用户名或者密码错误!");
         }
 
-        return null;
+        return JwtUtil.sign(username,encodePassword);
     }
 }

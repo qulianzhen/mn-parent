@@ -20,12 +20,6 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>${mapper.spring.boot.starter.version}</version>
         </dependency>
-        <!-- 引入自己的工具类 -->
-        <dependency>
-            <groupId>com.mn</groupId>
-            <artifactId>mn-util</artifactId>
-            <version>${com.mn.version}</version>
-        </dependency>
     </dependencies>
 
     <!-- 一旦Maven项目有变化，发生自动的update时,模块的LanguageLevel和JavaCompiler都变成1.5-->

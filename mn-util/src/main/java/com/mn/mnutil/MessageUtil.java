@@ -1,13 +1,7 @@
 package com.mn.mnutil;
 
+import com.mn.commonbean.exception.CodeMsgInfo;
 import com.mn.commonbean.restful.Message;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
 
 
 /**
@@ -21,28 +15,6 @@ public class  MessageUtil{
 	public static final String COMMON_SUCCESS_MSG = "操作成功";//通用成功消息
 	public static final String COMMON_FAILED_MSG = "操作失败";//通用失败消息
 	
-	public static final Map<Integer,String> codeMsgMap = new HashMap<>();
-	//将业务异常码配置读入内存
-	static{
-		 Properties prop = new Properties();
-	        InputStream in = MessageUtil.class.getResourceAsStream("/businesscode.properties");
-	        try {
-	            prop.load(in);
-	            Set<Object> keySet = prop.keySet();
-	            for(Object key:keySet){
-	            	codeMsgMap.put(Integer.parseInt(key.toString()), new String(((String) prop.get(key)).getBytes("ISO-8859-1"), "UTF-8") );
-	            }
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            try {
-	                if (in != null) in.close();
-	            } catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	}
-
 	/**
 	 * 创建一个[无返回数据][成功]的message
 	 * @return
@@ -62,6 +34,16 @@ public class  MessageUtil{
 	public static  Message  successMsg(String msg){
 		Message message = successMsg();
 		message.setMsg(msg);
+		return message;
+	}
+
+	/**
+	 * 创建一个[有特定异常编码的][异常]的message
+	 * @param code 异常编码
+	 * @return
+	 */
+	public static Message codeMsg(int code){
+		Message message = errorMsg(code).msg(CodeMsgInfo.codeMsgMap.get(code));
 		return message;
 	}
 	

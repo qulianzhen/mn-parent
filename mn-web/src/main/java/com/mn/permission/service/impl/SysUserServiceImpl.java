@@ -27,9 +27,9 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public SysUser findSysUserByUserName(String userName) {
         Example example = new Example(SysUser.class);
-        example.selectProperties("ID", "PASSWORD","ISLOCK");
-        example.createCriteria().andEqualTo("USER_NAME",userName)
-                                .andEqualTo("IS_DELETED",0);
+        example.selectProperties("id", "password","islock");
+        example.createCriteria().andEqualTo("userName",userName)
+                                .andEqualTo("isDeleted",0);
         return sysUserMapper.selectOneByExample(example);
     }
 

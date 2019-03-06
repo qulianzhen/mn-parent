@@ -32,7 +32,7 @@ public class LoginController {
         // 在shiro的过滤器中也已经把/login 加入了不处理的路径范围中，但是，在shiro里面配置了自己的自定义jwt过滤器
         // 在过滤器里面定义了 认证  和  鉴权 的方法，如executeLogin
         String token = loginService.jwtLogin(userName,password);
-        MessageUtil.successMsg().data(token);
+        return MessageUtil.successMsg().data(token);
     }
 
 }
