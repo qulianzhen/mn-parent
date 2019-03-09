@@ -121,3 +121,8 @@ logging:
 swagger:
   # swagger-ui.html开关：true，开启；false，关闭
   show: true
+
+#设定雪花算法机器码和数据中心码
+snowflake:
+  machineId: 1
+  datacenterId: 1

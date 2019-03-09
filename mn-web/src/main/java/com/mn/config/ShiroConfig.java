@@ -52,7 +52,8 @@ public class ShiroConfig {
         filterMap.put("jwt", new JwtFilter());
         shiroFilterFactoryBean.setFilters(filterMap);
         //过滤链定义，从上向下顺序执行，一般将/**放在最为下边; 将所有的请求指向该过滤器 filterRuleMap.put("/**", "jwt")
-        filterChainDefinitionMap.put("/**", "jwt");
+        //暂时注释掉！
+        //filterChainDefinitionMap.put("/**", "jwt");
 
 
         //未授权界面;

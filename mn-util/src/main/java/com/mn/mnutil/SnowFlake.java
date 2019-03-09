@@ -2,6 +2,11 @@ package com.mn.mnutil;
 
 /**
  * Twitter的分布式自增ID雪花算法snowflake
+ * snowflake-64bit = 符号位0(不变)+ 41位的时间序列（精确到毫秒级,可以使用69年） + 10位的机器标识(5位机器码+5位数据标识码) + 12位的计数序列号(自增,每毫秒产生4096个ID序号)
+ * 最核心（return (currentStamp - START_STAMP) << timestampBitLeftOffset | idcId << idcBitLeftOffset | machineId << machineBitLeftOffset | sequence;）
+ * 因为自定义部分，10位机器标识+12位序列号=22位，  时间差值位运算左移22位，得到18位数字，如果没有这么多节点需求，可以缩短自定义部分的位数，这样数字就会缩短，不会有影响；
+ * 这个应该需要单例，因为里面有同步实例方法synchronized，比如在一个系统中，多人并发保存同一个表的数据ID，保存方法没有写成一个，而是多个地方都有这个保存，也就是说构造ID
+ * 有多个地方，那么，同步就不起作用了，可能就重复了，虽然几率极小。。。
  * @author MENG
  * @create 2018-08-23 10:21
  **/
