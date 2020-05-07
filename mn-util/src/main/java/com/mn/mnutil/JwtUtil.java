@@ -14,14 +14,13 @@ import java.util.Date;
  * 在签名时可以通过 .withExpiresAt(date) 指定 token 的过期时间
  */
 public class JwtUtil {
-    private static final long EXPIRE_TIME = 5 * 60 * 1000;//5分钟
 
     /**
      * 校验token是否正确
      *
      * @param token  密钥
      * @param username 登录名
-     * @param password 用户的密码
+     * @param password 用户的密码--》不一定用用户密码，最后刷新token时候密码根本无法取出来，所以，可以用固定秘钥
      * @return 是否正确
      */
     public static boolean verify(String token, String username, String password) {
@@ -65,7 +64,23 @@ public class JwtUtil {
      * @return 加密的token
      */
     public static String sign(String username, String password) {
-        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+        Algorithm algorithm = Algorithm.HMAC256(password);
+        // 附带username信息
+        return JWT.create()
+                .withClaim("username", username)
+                .sign(algorithm);
+
+    }
+    /**
+     * 生成签名,5min后过期
+     *
+     * @param username 用户名
+     * @param password   用户的密码
+     * @param min   超时设置，分钟
+     * @return 加密的token
+     */
+    public static String sign(String username, String password,long min) {
+        Date date = new Date(System.currentTimeMillis() + min * 60 * 1000);
         Algorithm algorithm = Algorithm.HMAC256(password);
         // 附带username信息
         return JWT.create()
