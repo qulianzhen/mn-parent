@@ -26,7 +26,7 @@ public class CodeBuilderApplication {
 		String version = "v1.0";//版本*/
 
 
-		String modelName = "permission";
+		String modelName = "psytest";
 
 		Map<String,String> ftlVsFilePath = new HashMap<>();
 		//ftlVsFilePath.put("Controller[java].ftl","com.mn."+modelName+".controller");
@@ -41,8 +41,8 @@ public class CodeBuilderApplication {
 		config.setFtlVsFilePathMap(ftlVsFilePath);
 
 
-		config.setTableNames(new String[]{"sys_user"});
-		config.setEntityNames(new String[]{"SysUser"});
+		config.setTableNames(new String[]{"fp_test_topic","fp_test_topic_answers","fp_test_topic_item","fp_test_topic_item_option","fp_test_user_answers","fp_test_user_topic"});
+		config.setEntityNames(new String[]{"FpTestTopic","FpTestTopicAnswers","FpTestTopicItem","FpTestTopicItemOption","FpTestUserAnswers","FpTestUserTopic"});
 		config.setIgnoreBeanProperty(new String[]{});
 		config.setSearchColumns(new String[]{});
 
