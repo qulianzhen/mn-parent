@@ -10,12 +10,12 @@ import java.util.Date;
 /**
  * 字典主表类
  */
-@Table(name = "sys_dict")
+@Table(name = "MN_SYS_DICT")
 public class SysDict {
 
     @Column(name = "ID")
     @Id
-    private String id;
+    private Long id;
 
     @Column(name="DICT_TYPE")
     private String dictType;
@@ -25,11 +25,11 @@ public class SysDict {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date createDate;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

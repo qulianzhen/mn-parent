@@ -33,7 +33,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<fastjson.version>1.2.47</fastjson.version>
+		<fastjson.version>1.2.62</fastjson.version>
 	</properties>
 
 	<!-- 一些所有子模块都可能会用到的依赖，直接继承给他们 -->
@@ -71,5 +71,19 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+
+		<!--解决Intellij构建项目时，target/classes目录下不存在mapper.xml文件-->
+		<resources>
+			<resource>
+				<!-- 指定resources插件处理哪个目录下的资源文件 -->
+				<directory>src/main/resources/</directory>
+				<!--注意此次必须要放在此目录下才能被访问到 -->
+				<!--<targetPath>META-INF/resources</targetPath>-->
+				<includes>
+					<include>**/**</include>
+				</includes>
+			</resource>
+		</resources>
+
 	</build>
 </project>

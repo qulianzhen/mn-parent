@@ -1,4 +1,5 @@
 package com.mn.permission.entity.po;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -15,7 +16,7 @@ import java.util.Date;
  * @Date           2019-03-01 01:19:52
  */
 @ApiModel(value="用户表Model",description="用户表对象数据模型")
-@Table(name="sys_user")
+@Table(name = "MN_SYS_USER")
 public class SysUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 	//主键

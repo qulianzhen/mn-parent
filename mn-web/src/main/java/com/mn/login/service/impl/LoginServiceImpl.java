@@ -2,6 +2,7 @@ package com.mn.login.service.impl;
 
 import com.mn.commonbean.exception.BusinessIncorrectException;
 import com.mn.commonbean.exception.BusinessInvalidParamException;
+import com.mn.config.TokenConfig;
 import com.mn.login.service.LoginService;
 import com.mn.mnutil.JwtUtil;
 import com.mn.mnutil.StringUtil;
@@ -35,10 +36,16 @@ public class LoginServiceImpl implements LoginService {
         SimpleHash hash = new SimpleHash("md5", password, username, 2);
         String encodePassword = hash.toHex();
 
-        if(!sysUser.getPassword().equals(encodePassword)){
+        if(sysUser==null || !sysUser.getPassword().equals(encodePassword)){
             throw new BusinessIncorrectException("用户名或者密码错误!");
         }
 
-        return JwtUtil.sign(username,encodePassword);
+        return JwtUtil.sign(username,TokenConfig.secret, TokenConfig.timeout);
+    }
+
+    public static void main(String[] args) {
+        SimpleHash hash = new SimpleHash("md5", "1", "qlz", 2);
+        String encodePassword = hash.toHex();
+        System.out.println("args = [" + encodePassword + "]");
     }
 }
