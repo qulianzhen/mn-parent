@@ -26,6 +26,8 @@ public class Message implements Serializable {
 
 	public static final int NO_LOGIN = 5;//未登陆(备用)
 
+	public static final String UNKNOWN_EXCEPTION_MSG = "未知异常,请联系管理员!";
+
 	
 	/**
 	 * 返回的信息(主要出错的时候使用)
@@ -40,6 +42,11 @@ public class Message implements Serializable {
 	 * <0 : 表示未知的异常(不需要单独处理, 调用方统一处理)
 	 */
 	private int code = SUCCESS;
+
+	/**
+	 * 刷新token用，自动设置
+	 */
+	private String token;
 	
 	/**
 	 * 返回的数据
@@ -113,5 +120,19 @@ public class Message implements Serializable {
 	public Message data(Object data){
 		this.data = data;
 		return this;
+	}
+
+	@Override
+	public String toString() {
+		return "Message{" +
+				"msg='" + msg + '\'' +
+				", code=" + code +
+				", data=" + data +
+				'}';
+	}
+
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

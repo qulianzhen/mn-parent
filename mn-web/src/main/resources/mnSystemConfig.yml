@@ -1,0 +1,25 @@
+#MN系统参数配置
+#版本管理
+mn:
+  system:
+    version: 0.0.0
+#登录配置
+login:
+  #系统默认登录页开启:true为开启，默认为开启；开启之后，可以通过访问根路径自动跳转登录页
+  enableDefaultLoginPage: true
+  #系统默认登录页使用验证码
+  enableVerificationCode: true
+  #系统登录页验证码类型为第1种
+  verificationCodeStyle: 1
+access:
+  #不需要认证，不需要权限
+  anon:
+    - /admin/sys/login/**
+    - /admin/sys/verificationCode
+  #仅仅需要认证，不需要权限
+  authc:
+    /**
+  #认证+权限，都需要
+  perms:
+    /**
+

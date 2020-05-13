@@ -25,10 +25,12 @@ spring:
       #UTC代表的是全球标准时间 ，但是我们使用的时间是北京时区也就是东八区，领先UTC八个小时
       #可以用： 北京时间东八区 serverTimezone=GMT%2B8   或者使用上海时间 serverTimezone=Asia/Shanghai
       #useSSL：指定是否用ssl连接
-      url: jdbc:mysql://127.0.0.1:3306/mn?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+      #url: jdbc:mysql://127.0.0.1:3306/mn?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
+      url: jdbc:mysql://127.0.0.1:3306/mn?useUnicode=true&amp;characterEncoding=UTF-8&allowMultiQueries=true
       username: root
       password: 123456
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      #driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.mysql.jdbc.Driver
       initial-size: 5 #初始化连接数 5 -官网推荐（还需要结合服务器性能）
       min-idle: 10  #最小  去除了混淆的概念，就相当于最小连接数
       max-active: 20 #最大连接数量 公式：((核心数 * 2) + 有效磁盘数)
@@ -69,7 +71,21 @@ spring:
         enabled: true
         url-pattern: /*
         exclusions: '*.gif,*.png,*.jpg,*.html,*.js,*.css,*.ico,/druid/*'
-
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2000ms
+    password: 123456
+    lettuce:
+      pool:
+        max-active: 300 #连接池最大连接数（使用负值表示没有限制）
+        max-idle: 200   #连接池中的最大空闲连接
+        max-wait: 20s #连接池最大阻塞等待时间（使用负值表示没有限制）
+        min-idle: 10  #连接池中的最小空闲连接
+      #sentinel: #哨兵 设置
+        #master: Name of Redis server
+        #nodes: Comma-separated list of host:port pairs
 
 #测试属性赋值
 person:
@@ -126,3 +142,19 @@ swagger:
 snowflake:
   machineId: 1
   datacenterId: 1
+
+#token 配置
+token:
+  #token名称
+  tokenName: X-TOKEN
+  #超时时间-分钟
+  timeout: 5
+  #是否自动刷新
+  refresh: true
+  #token秘钥
+  secret: 90kpo1?_230_a451x
+  #userflg
+  userflg: X-SUBJECT
+
+
+
