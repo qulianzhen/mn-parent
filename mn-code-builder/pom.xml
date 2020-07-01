@@ -15,7 +15,7 @@
         <spring.version>4.3.22.RELEASE</spring.version>
         <hibernate.core.version>4.3.9.Final</hibernate.core.version>
         <druid.version>1.1.10</druid.version>
-        <mysql.connector.java.version>8.0.11</mysql.connector.java.version>
+        <mysql.connector.java.version>8.0.16</mysql.connector.java.version>
     </properties>
 
     <!-- spring web mvc 依赖-->
