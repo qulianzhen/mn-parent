@@ -1,5 +1,7 @@
 package com.mn.dict.entity.po;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mn.config.JsonLongSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ public class SysDict {
 
     @Column(name = "ID")
     @Id
+    @JsonSerialize(using = JsonLongSerializer.class )
     private Long id;
 
     @Column(name="DICT_TYPE")

@@ -2,4 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mn.dict.mapper.SysDictMapper">
 
+    <sql id="tbl_columns">
+        ID,DICT_TYPE,DICT_DESC,CREATE_DATE
+    </sql>
+    <!-- 查询字典列表  -->
+    <select id="listSysDict" resultType="SysDict" parameterType="SysDictParam">
+        select
+          <include refid="tbl_columns"/>
+        from MN_SYS_DICT
+        where 1=1
+        <if test='dictType!=null and dictType!=""'>
+            and DICT_TYPE = #{dictType}
+        </if>
+        <if test='dictDesc!=null and dictDesc!=""'>
+            and DICT_DESC like concat('%', #{dictDesc},'%')
+        </if>
+    </select>
+
+    <!-- 获取单条字典记录 -->
+    <select id="getSysDict" resultType="SysDict" parameterType="Long">
+        select
+        <include refid="tbl_columns"/>
+        from MN_SYS_DICT
+        where ID = #{0}
+    </select>
+
+    <!-- 新增字典记录 -->
+    <insert id="insertSysDict" parameterType="SysDict">
+        insert into MN_SYS_DICT(<include refid="tbl_columns"/>) values(#{id},#{dictType},#{dictDesc},#{createDate})
+    </insert>
+
+    <!-- 修改字典记录 -->
+    <insert id="updateSysDict" parameterType="SysDict">
+        update MN_SYS_DICT set
+          DICT_TYPE = #{dictType},
+          DICT_DESC = #{dictDesc}
+        where ID = #{id}
+    </insert>
+
+    <!-- 删除字典记录 -->
+    <delete id="deleteSysDict" parameterType="java.util.List">
+        delete from  MN_SYS_DICT
+        where ID in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

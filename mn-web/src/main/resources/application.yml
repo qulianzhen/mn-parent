@@ -10,6 +10,8 @@ server:
     uri-encoding: UTF-8
 
 spring:
+  profiles:
+    include: commonmodule
   application:
     name: mn-web
   datasource:
@@ -26,7 +28,7 @@ spring:
       #可以用： 北京时间东八区 serverTimezone=GMT%2B8   或者使用上海时间 serverTimezone=Asia/Shanghai
       #useSSL：指定是否用ssl连接
       #url: jdbc:mysql://127.0.0.1:3306/mn?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8&useSSL=false
-      url: jdbc:mysql://127.0.0.1:3306/mn?useUnicode=true&amp;characterEncoding=UTF-8&allowMultiQueries=true
+      url: jdbc:mysql://127.0.0.1:3306/mn-boot?useUnicode=true&amp;characterEncoding=UTF-8&allowMultiQueries=true
       username: root
       password: 123456
       #driver-class-name: com.mysql.cj.jdbc.Driver
@@ -71,22 +73,6 @@ spring:
         enabled: true
         url-pattern: /*
         exclusions: '*.gif,*.png,*.jpg,*.html,*.js,*.css,*.ico,/druid/*'
-  redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    timeout: 2000ms
-    password: 123456
-    lettuce:
-      pool:
-        max-active: 300 #连接池最大连接数（使用负值表示没有限制）
-        max-idle: 200   #连接池中的最大空闲连接
-        max-wait: 20s #连接池最大阻塞等待时间（使用负值表示没有限制）
-        min-idle: 10  #连接池中的最小空闲连接
-      #sentinel: #哨兵 设置
-        #master: Name of Redis server
-        #nodes: Comma-separated list of host:port pairs
-
 #测试属性赋值
 person:
   lastName: zhangsan
@@ -102,10 +88,13 @@ person:
     age: 2
 #通用Mapper的配置
 mybatis:
-  #扫描实体类的所在包
-  type-aliases-package: com.mn.**.entity
+  #扫描实体类的所在包(使用别名)
+  type-aliases-package: com.mn.*.entity.**
   #如果不是纯注解方式，需要指定mapper接口对应的.xml文件
   mapper-locations: classpath:mapper/**/*Mapper.xml
+  #自动转换驼峰
+  configuration:
+      map-underscore-to-camel-case: true
 mapper:
   #通用mapper的所在接口名称
   mappers: com.mn.commonbean.tkmapper.MyMapper
@@ -148,7 +137,7 @@ token:
   #token名称
   tokenName: X-TOKEN
   #超时时间-分钟
-  timeout: 5
+  timeout: 30
   #是否自动刷新
   refresh: true
   #token秘钥

@@ -14,7 +14,7 @@
 
     <!-- 属性集中放置，便于管理 -->
     <properties>
-        <mybatis.spring.boot.starter.version>2.0.0</mybatis.spring.boot.starter.version>
+        <mybatis.spring.boot.starter.version>2.0.1</mybatis.spring.boot.starter.version>
         <druid.spring.boot.starter.version>1.1.10</druid.spring.boot.starter.version>
         <!--<mysql.connector.java.version>8.0.11</mysql.connector.java.version>-->
         <mysql.connector.java.version>5.1.38</mysql.connector.java.version>
@@ -28,21 +28,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spring-boot-starter-logging</artifactId>
-                    <groupId>org.springframework.boot</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- redis依赖commons-pool 这个依赖一定要添加 -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -124,6 +109,12 @@
         <dependency>
             <groupId>com.mn</groupId>
             <artifactId>mn-common-bean</artifactId>
+            <version>${com.mn.version}</version>
+        </dependency>
+        <!-- 引入common module -->
+        <dependency>
+            <groupId>com.mn</groupId>
+            <artifactId>mn-common-module</artifactId>
             <version>${com.mn.version}</version>
         </dependency>
         <!-- swagger依赖 -->

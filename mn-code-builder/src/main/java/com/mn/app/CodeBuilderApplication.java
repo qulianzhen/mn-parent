@@ -26,13 +26,18 @@ public class CodeBuilderApplication {
 		String version = "v1.0";//版本*/
 
 
-		String modelName = "psytest";
+		String modelName = "syspermission";
 
 		Map<String,String> ftlVsFilePath = new HashMap<>();
 		//ftlVsFilePath.put("Controller[java].ftl","com.mn."+modelName+".controller");
 		//ftlVsFilePath.put("Service[java].ftl","com.mn."+modelName+".service");
 		//ftlVsFilePath.put("ServiceImpl[java].ftl","com.mn."+modelName+".service.impl");
 		ftlVsFilePath.put("[java].ftl","com.mn."+modelName+".entity.po");
+		ftlVsFilePath.put("Vo[java].ftl","com.mn."+modelName+".entity.vo");
+		ftlVsFilePath.put("Param[java].ftl","com.mn."+modelName+".entity.param");
+		ftlVsFilePath.put("Controller[java].ftl","com.mn."+modelName+".controller");
+		ftlVsFilePath.put("Service[java].ftl","com.mn."+modelName+".service");
+		ftlVsFilePath.put("ServiceImpl[java].ftl","com.mn."+modelName+".service.impl");
 		//ftlVsFilePath.put("Search[java].ftl","com.mn."+modelName+".entity.param");
 		//ftlVsFilePath.put("[java].ftl","com.mn."+modelName+".mapper");
 		ftlVsFilePath.put("Mapper[xml].ftl","mapper/"+modelName);
@@ -41,8 +46,8 @@ public class CodeBuilderApplication {
 		config.setFtlVsFilePathMap(ftlVsFilePath);
 
 
-		config.setTableNames(new String[]{"fp_test_topic","fp_test_topic_answers","fp_test_topic_item","fp_test_topic_item_option","fp_test_user_answers","fp_test_user_topic"});
-		config.setEntityNames(new String[]{"FpTestTopic","FpTestTopicAnswers","FpTestTopicItem","FpTestTopicItemOption","FpTestUserAnswers","FpTestUserTopic"});
+		config.setTableNames(new String[]{"mn_sys_permission"});
+		config.setEntityNames(new String[]{"SysPermission"});
 		config.setIgnoreBeanProperty(new String[]{});
 		config.setSearchColumns(new String[]{});
 
@@ -52,11 +57,12 @@ public class CodeBuilderApplication {
 		config.setVersion("1.0");
 
 		config.setGenerateLombokAnnotation(false);
-		config.setGenerateSwaggerAnnotation(true);
-		config.setSwaggerDataModelIgnoreProp(new String[]{"creater","modifier","createDate","updateDate","isDeleted"});
+		config.setGenerateSwaggerAnnotation(false);
+		//config.setSwaggerDataModelIgnoreProp(new String[]{"creater","modifier","createDate","updateDate","isDeleted"});
+		config.setSwaggerDataModelIgnoreProp(new String[]{});
 		config.setDbType(DbTypeEnum.mysql);
 		config.setColumnTrans(ColumnTransformTypeEnum.tf);
-		config.setFtlLocationPath("codeTemplate/commonMapper");
+		config.setFtlLocationPath("codeTemplate/mnBoot");
 
 
 		

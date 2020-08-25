@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.sysuser.mapper.SysUserMapper">
+
+  <sql id="tbl_columns">
+		ID,
+		USER_NAME,
+		NICK_NAME,
+		PASSWORD,
+		EMPLOYYER_ID,
+		ISLOCK,
+		PHOTO,
+		USER_STATUS,
+		REMARK,
+		CREATE_DATE,
+		UPDATE_DATE,
+		IS_DELETED,
+		LAST_LOGIN_DATE
+  </sql>
+
+
+    <!-- 查询用户表列表  -->
+    <select id="listSysUser" resultType="SysUser" parameterType="SysUserParam">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_user
+        where 1=1
+    </select>
+
+    <!-- 获取单条用户表记录 -->
+    <select id="getSysUser" resultType="SysUser" parameterType="Long">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_user
+        where ID = #{id}
+    </select>
+
+
+    <!-- 新增用户表记录 -->
+    <insert id="insertSysUser" parameterType="SysUser">
+        insert into mn_sys_user(<include refid="tbl_columns"/>) values(
+    	    #{id},
+    	    #{userName},
+    	    #{nickName},
+    	    #{password},
+    	    #{employyerId},
+    	    #{islock},
+    	    #{photo},
+    	    #{userStatus},
+    	    #{remark},
+    	    #{createDate},
+    	    #{updateDate},
+    	    #{isDeleted},
+    	    #{lastLoginDate}
+        )
+    </insert>
+
+    <!-- 修改用户表记录 -->
+    <insert id="updateSysUser" parameterType="SysUser">
+        update mn_sys_user
+        <set>
+          <if test="id != null">
+              ID = #{id},
+          </if>
+          <if test="userName != null">
+              USER_NAME = #{userName},
+          </if>
+          <if test="nickName != null">
+              NICK_NAME = #{nickName},
+          </if>
+          <if test="employyerId != null">
+              EMPLOYYER_ID = #{employyerId},
+          </if>
+          <if test="photo != null">
+              PHOTO = #{photo},
+          </if>
+          <if test="remark != null">
+              REMARK = #{remark},
+          </if>
+        </set>
+        where ID = #{id}
+    </insert>
+
+    <!-- 删除用户表记录 -->
+    <delete id="deleteSysUser" parameterType="java.util.List">
+        delete from  mn_sys_user
+        where ID in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+    </delete>
+
+    <!-- 根据用户登录名获得url权限集合 -->
+    <select id="getUrlPermitByUserName" parameterType="String" resultType="String">
+        SELECT PERMISSION_URL
+        FROM MN_SYS_PERMISSION
+        WHERE PERMISSION_TYPE = 0
+        AND id IN (
+            SELECT PERMISSION_ID
+            FROM SYS_ROLE_PERMISSION
+            WHERE ROLE_ID IN (
+                    SELECT ROLE_ID
+                    FROM MN_SYS_USER_ROLE
+                    WHERE USER_ID = ( SELECT id FROM MN_SYS_USER WHERE USER_NAME = #{0})
+                )
+        )
+        UNION
+            SELECT MENU_URL  PERMISSION_URL
+        FROM MN_SYS_MENU
+        WHERE MENU_ENABLE = 1 and MENU_URL is not null
+        AND id IN (
+            SELECT PERMISSION_ID
+            FROM SYS_ROLE_PERMISSION
+            WHERE ROLE_ID IN (
+                    SELECT ROLE_ID
+                    FROM MN_SYS_USER_ROLE
+                    WHERE USER_ID = (SELECT id FROM MN_SYS_USER WHERE USER_NAME = #{0})
+                )
+        )
+    </select>
+</mapper>

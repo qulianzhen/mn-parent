@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import java.util.List;
-
 /**
  * @Description: 系统配置Bean
  * @Author:Mloong
@@ -24,34 +22,14 @@ public class MnSystemConfig {
 
     public static int verificationCodeStyle;
 
-    public static List<String> accessAnonList;
-
-    public static List<String> accessAuthcList;
-
-    public static List<String> accessPermsList;
-
     @Value("${mn.system.version}")
-    public static void setVersion(String version) {
+    public  void setVersion(String version) {
         MnSystemConfig.version = version;
     }
 
     @Value("${login.verificationCodeStyle}")
-    public static void setVerificationCodeStyle(int verificationCodeStyle) {
+    public  void setVerificationCodeStyle(int verificationCodeStyle) {
         MnSystemConfig.verificationCodeStyle = verificationCodeStyle;
     }
 
-    @Value("${access.anon}")
-    public static void setAccessAnonList(List<String> accessAnonList) {
-        MnSystemConfig.accessAnonList = accessAnonList;
-    }
-
-    @Value("${access.authc}")
-    public static void setAccessAuthcList(List<String> accessAuthcList) {
-        MnSystemConfig.accessAuthcList = accessAuthcList;
-    }
-
-    @Value("${access.perms}")
-    public static void setAccessPermsList(List<String> accessPermsList) {
-        MnSystemConfig.accessPermsList = accessPermsList;
-    }
 }

@@ -1,0 +1,38 @@
+spring:
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    timeout: 2000ms
+    password: 123456
+    #Jedis和Lettuce的区别:Jedis和Lettuce都是Redis Client, Lettuce的连接是基于Netty的，连接实例可以在多个线程间共享,减少线程数量
+    # Jedis 是直连模式，在多个线程间共享一个 Jedis 实例时是线程不安全的，
+    # 如果想要在多线程环境下使用 Jedis，需要使用连接池，
+    # 每个线程都去拿自己的 Jedis 实例，当连接数量增多时，物理连接成本就较高了。
+    # Lettuce的连接是基于Netty的，连接实例可以在多个线程间共享，
+    # 所以，一个多线程的应用可以使用同一个连接实例，而不用担心并发线程的数量。
+    # 当然这个也是可伸缩的设计，一个连接实例不够的情况也可以按需增加连接实例。
+    # 通过异步的方式可以让我们更好的利用系统资源，而不用浪费线程等待网络或磁盘I/O。
+    # Lettuce 是基于 netty 的，netty 是一个多线程、事件驱动的 I/O 框架，
+    # 所以 Lettuce 可以帮助我们充分利用异步的优势。
+    #如果你感觉并不需要这个pool，把pool的配置给去掉就行了
+    lettuce:
+      pool:
+        max-active: 300 #连接池最大连接数（使用负值表示没有限制）,默认8
+        max-idle: 200   #连接池中的最大空闲连接，默认8
+        max-wait: 20s #连接池最大阻塞等待时间（使用负值表示没有限制）
+        min-idle: 10  #连接池中的最小空闲连接，默认0
+      #sentinel: #哨兵 设置【这里关系到springBoot如何创建redis连接】
+        #master: Name of Redis server
+        #nodes: Comma-separated list of host:port pairs
+access:
+  #这里自己规定，校验顺序是anon,authc,perms,从上往下匹配测试，如果找到匹配，则不再往下寻找
+  #不需要认证，不需要权限
+  accessAnonList:
+    - /admin/login
+  #仅仅需要认证，不需要权限
+  accessAuthcList:
+    - /sysMenu/sysMenuTree
+  #认证+权限，都需要
+  accessPermsList:
+    - /**

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.syspermission.mapper.SysPermissionMapper">
+
+  <sql id="tbl_columns">
+		ID,
+		PERMISSION_NAME,
+		PERMISSION_URL,
+		PERMISSION_TYPE,
+		PERMISSION_PARENT_ID,
+		PERMISSION_REMARK,
+		CREATE_DATE,
+		UPDATE_DATE,
+		IS_DELETED,
+		PERMISSION_ORDER
+  </sql>
+
+
+    <!-- 查询权限表列表  -->
+    <select id="listSysPermission" resultType="SysPermission" parameterType="SysPermissionParam">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_permission
+        where 1=1
+        order by PERMISSION_ORDER
+    </select>
+
+    <!-- 获取单条权限表记录 -->
+    <select id="getSysPermission" resultType="SysPermission" parameterType="Long">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_permission
+        where ID = #{id}
+    </select>
+
+
+    <!-- 新增权限表记录 -->
+    <insert id="insertSysPermission" parameterType="SysPermission">
+        insert into mn_sys_permission(<include refid="tbl_columns"/>) values(
+    	    #{id},
+    	    #{permissionName},
+    	    #{permissionUrl},
+    	    #{permissionType},
+    	    #{permissionParentId},
+    	    #{permissionRemark},
+    	    #{createDate},
+    	    #{updateDate},
+    	    #{isDeleted},
+    	    #{permissionOrder}
+        )
+    </insert>
+
+    <!-- 修改权限表记录 -->
+    <insert id="updateSysPermission" parameterType="SysPermission">
+        update mn_sys_permission
+        <set>
+          <if test="permissionName != null">
+              PERMISSION_NAME = #{permissionName},
+          </if>
+          <if test="permissionUrl != null">
+              PERMISSION_URL = #{permissionUrl},
+          </if>
+          <if test="permissionType != null">
+              PERMISSION_TYPE = #{permissionType},
+          </if>
+          <if test="permissionRemark != null">
+              PERMISSION_REMARK = #{permissionRemark},
+          </if>
+          <if test="updateDate != null">
+              UPDATE_DATE = #{updateDate},
+          </if>
+          <if test="permissionOrder != null">
+              PERMISSION_ORDER = #{permissionOrder},
+          </if>
+        </set>
+        where ID = #{id}
+    </insert>
+
+    <!-- 删除权限表记录 -->
+    <delete id="deleteSysPermission" parameterType="java.util.List">
+        delete from  mn_sys_permission
+        where ID in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+    </delete>
+
+    <!--查询权限信息 -->
+    <select id="getSysPermissionInfo" parameterType="Long" resultType="SysPermissionVo">
+        select
+        mn_sys_permission.ID id,
+		PERMISSION_NAME permissionName,
+		PERMISSION_URL permissionUrl,
+		PERMISSION_TYPE permissionType,
+		PERMISSION_PARENT_ID permissionParentId,
+		PERMISSION_REMARK permissionRemark,
+		PERMISSION_ORDER permissionOrder,
+		mn_sys_menu.MENU_NAME menuName
+		from mn_sys_permission
+		left join mn_sys_menu on mn_sys_menu.ID = mn_sys_permission.PERMISSION_PARENT_ID
+		where mn_sys_permission.ID = #{0}
+    </select>
+
+    <!-- 根据roleId删除角色绑定 -->
+    <delete id="deleteRolePermission" parameterType="Long">
+        delete from sys_role_permission where ROLE_ID = #{roleId}
+    </delete>
+
+    <!-- 批量新增角色权限绑定关系 -->
+    <insert id="saveRolePermission" parameterType="java.util.List">
+        insert into sys_role_permission(ID,ROLE_ID,PERMISSION_ID,PERMISSION_TYPE)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},#{item.roleId},#{item.permissionId},#{item.permissionType})
+        </foreach>
+    </insert>
+
+    <!-- 根据用户Id查询所有角色 -->
+    <select id="listPermissionByRoleId" parameterType="Long" resultType="Long">
+        select PERMISSION_ID as permissionId from sys_role_permission where ROLE_ID = #{roleId}
+    </select>
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.sysrole.mapper.SysRoleMapper">
+
+  <sql id="tbl_columns">
+		ID,
+		ROLE_NAME,
+		ROLE_ENABLE,
+		REMARK,
+		CREATE_DATE,
+		UPDATE_DATE,
+		IS_DELETED
+  </sql>
+
+
+    <!-- 查询角色表列表  -->
+    <select id="listSysRole" resultType="SysRole" parameterType="SysRoleParam">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_role
+        where 1=1
+    </select>
+
+    <!-- 获取单条角色表记录 -->
+    <select id="getSysRole" resultType="SysRole" parameterType="Long">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_role
+        where ID = #{id}
+    </select>
+
+
+    <!-- 新增角色表记录 -->
+    <insert id="insertSysRole" parameterType="SysRole">
+        insert into mn_sys_role(<include refid="tbl_columns"/>) values(
+    	    #{id},
+    	    #{roleName},
+    	    #{roleEnable},
+    	    #{remark},
+    	    #{createDate},
+    	    #{updateDate},
+    	    #{isDeleted}
+        )
+    </insert>
+
+    <!-- 修改角色表记录 -->
+    <insert id="updateSysRole" parameterType="SysRole">
+        update mn_sys_role
+        <set>
+          <if test="id != null">
+              ID = #{id},
+          </if>
+          <if test="roleName != null">
+              ROLE_NAME = #{roleName},
+          </if>
+          <if test="roleEnable != null">
+              ROLE_ENABLE = #{roleEnable},
+          </if>
+          <if test="remark != null">
+              REMARK = #{remark},
+          </if>
+          <if test="createDate != null">
+              CREATE_DATE = #{createDate},
+          </if>
+          <if test="updateDate != null">
+              UPDATE_DATE = #{updateDate},
+          </if>
+          <if test="isDeleted != null">
+              IS_DELETED = #{isDeleted},
+          </if>
+        </set>
+        where ID = #{id}
+    </insert>
+
+    <!-- 删除角色表记录 -->
+    <delete id="deleteSysRole" parameterType="java.util.List">
+        delete from  mn_sys_role
+        where ID in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+    </delete>
+
+    <!-- 根据userid删除角色绑定 -->
+    <delete id="deleteUserRole" parameterType="Long">
+        delete from mn_sys_user_role where USER_ID = #{userId}
+    </delete>
+
+    <!-- 批量新增用户角色绑定关系 -->
+    <insert id="saveUserRole" parameterType="java.util.List">
+        insert into mn_sys_user_role(ID,USER_ID,ROLE_ID)
+        values
+        <foreach collection="list" item="item" separator=",">
+        (#{item.id},#{item.userId},#{item.roleId})
+        </foreach>
+    </insert>
+
+    <!-- 根据用户Id查询所有角色 -->
+    <select id="listRoleByUserId" parameterType="Long" resultType="Long">
+        select ROLE_ID as roleId from mn_sys_user_role where USER_ID = #{userId}
+    </select>
+
+
+</mapper>

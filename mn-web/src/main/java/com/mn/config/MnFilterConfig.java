@@ -2,6 +2,7 @@ package com.mn.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
@@ -12,6 +13,7 @@ import javax.servlet.DispatcherType;
  * @auth qulianzhen
  * @date 2020-04-22 21:00
  */
+@Configuration
 public class MnFilterConfig {
 
     @Bean(name="mnAccessFilter")
