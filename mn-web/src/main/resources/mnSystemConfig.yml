@@ -11,15 +11,4 @@ login:
   enableVerificationCode: true
   #系统登录页验证码类型为第1种
   verificationCodeStyle: 1
-access:
-  #不需要认证，不需要权限
-  anon:
-    - /admin/sys/login/**
-    - /admin/sys/verificationCode
-  #仅仅需要认证，不需要权限
-  authc:
-    /**
-  #认证+权限，都需要
-  perms:
-    /**
 

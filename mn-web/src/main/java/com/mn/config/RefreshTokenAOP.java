@@ -1,8 +1,6 @@
 package com.mn.config;
 
 import com.mn.commonbean.restful.Message;
-import com.mn.mnutil.JwtUtil;
-import org.apache.shiro.SecurityUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -49,14 +47,14 @@ public class RefreshTokenAOP {
      * 后置通知：在目标方法执行后调用，若目标方法出现异常，则不执行
      */
     @AfterReturning(pointcut="cutMethod()",returning = "msg")
-    public void afterReturning(Message msg) {
+    public void afterReturning(JoinPoint joinPoint,Message msg) {
         System.out.println("==@AfterReturning== : after returning");
         System.out.println(msg);
         if(msg!=null){
-            String token = (String)SecurityUtils.getSubject().getPrincipal();
-            String username = JwtUtil.getUsername(token);
+            //String token = (String)SecurityUtils.getSubject().getPrincipal();
+            //String username = JwtUtil.getUsername(token);
             //解析token，并生成新的token
-            msg.setToken(JwtUtil.sign(username,TokenConfig.secret,TokenConfig.timeout));
+            //msg.setToken(JwtUtil.sign(username,TokenConfig.secret,TokenConfig.timeout));
         }
     }
 
@@ -76,13 +74,18 @@ public class RefreshTokenAOP {
         System.out.println("==@AfterThrowing==  : after throwing");
     }
 
+    /**
+     * 环绕通知
+     * @param joinPoint
+     * @throws Throwable
+     */
     @Around("cutMethod()")
-    public void around(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         /*// 获取目标方法的名称
         String methodName = joinPoint.getSignature().getName();
         // 获取方法传入参数
         Object[] params = joinPoint.getArgs();*/
-        joinPoint.proceed();
+        return  joinPoint.proceed();
     }
 
     /**

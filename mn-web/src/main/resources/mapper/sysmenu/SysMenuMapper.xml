@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.menu.mapper.SysMenuMapper">
+    <select id="getSysMenuInfo" parameterType="Long" resultType="com.mn.menu.entity.vo.SysMenuVo">
+        select
+            t1.ID id,t1.PARENT_ID parentId,t1.MENU_NAME menuName,t1.MENU_URL menuUrl,t1.MENU_ICON menuIcon,
+            t1.MENU_ORDER menuOrder  ,t1.MENU_ENABLE menuEnable,t1.IS_LEFT isLeft ,
+            IFNULL(t2.MENU_NAME,'根菜单') parentName
+        from MN_SYS_MENU t1
+        LEFT JOIN MN_SYS_MENU t2 on t1.PARENT_ID = t2.ID
+        where t1.ID = #{0}
+    </select>
+
+    <update id="updateSysMenu" parameterType="com.mn.menu.entity.po.SysMenu">
+        update mn_sys_menu
+        set PARENT_ID = #{parentId},MENU_NAME=#{menuName},MENU_URL=#{menuUrl},MENU_ICON=#{menuIcon},
+        MENU_ORDER = #{menuOrder},MENU_ENABLE=#{menuEnable},IS_LEFT=#{isLeft}
+        where ID = #{id}
+    </update>
+
+
+    <select id="selectMenuList" parameterType="SysMenuParam" resultType="SysMenu">
+        select
+        ID id,PARENT_ID parentId,MENU_NAME menuName,MENU_URL menuUrl,MENU_ICON menuIcon,MENU_LEVEL menuLevel,
+        MENU_ORDER menuOrder,MENU_ENABLE menuEnable,IS_LEFT isLeft
+        from mn_sys_menu where IS_DELETED = 0
+        <if test="parentId!=null">
+            and PARENT_ID = #{parentId}
+        </if>
+        <if test="loginName!=null">
+            and ID in (
+                select PERMISSION_ID from sys_role_permission
+                where PERMISSION_TYPE = 2 and ROLE_ID in (
+                  select ROLE_ID from mn_sys_user_role where USER_ID = (select ID from mn_sys_user where USER_NAME = #{loginName})
+            )
+         )
+        </if>
+        order by MENU_ORDER asc
+    </select>
+</mapper>

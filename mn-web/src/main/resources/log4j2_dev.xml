@@ -134,6 +134,14 @@
             <AppenderRef ref="AsyncAppenderSql" />
             <AppenderRef ref="Console" />
         </logger>
+        <logger name="com.mn.sysrole.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
+        <logger name="com.mn.syspermission.mapper" level="DEBUG" additivity="false">
+            <AppenderRef ref="AsyncAppenderSql" />
+            <AppenderRef ref="Console" />
+        </logger>
 
         <Root level="info">
             <AppenderRef ref="RollingRandomAccessFile" />

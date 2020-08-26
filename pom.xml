@@ -25,6 +25,7 @@
 		<module>mn-common-bean</module>
         <module>mn-mbg-generator</module>
 		<module>mn-code-builder</module>
+		<module>mn-common-module</module>
 	</modules>
 	<packaging>pom</packaging>
 

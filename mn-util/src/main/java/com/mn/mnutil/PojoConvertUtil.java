@@ -36,7 +36,8 @@ public class PojoConvertUtil {
         try {
             T target = targetClass.newInstance();
             /** 获取源对象的所有变量 */
-            Field[] fields = orig.getClass().getDeclaredFields();
+            //Field[] fields = orig.getClass().getDeclaredFields();
+            Field[] fields = getAllFields(orig);
             for (Field field : fields) {
                 if (isStatic(field)) continue;
                 /** 获取目标方法 */
@@ -266,4 +267,22 @@ public class PojoConvertUtil {
     public static boolean isStatic(Field field) {
         return (8 & field.getModifiers()) == 8;
     }
+
+    /**
+     * 获取所有属性，包含父类的属性
+     * @param object
+     * @return
+     */
+    public static Field[] getAllFields(Object object){
+        Class clazz = object.getClass();
+        List<Field> fieldList = new ArrayList<>();
+        while (clazz != null){
+            fieldList.addAll(new ArrayList<>(Arrays.asList(clazz.getDeclaredFields())));
+            clazz = clazz.getSuperclass();
+        }
+        Field[] fields = new Field[fieldList.size()];
+        fieldList.toArray(fields);
+        return fields;
+    }
+
 }

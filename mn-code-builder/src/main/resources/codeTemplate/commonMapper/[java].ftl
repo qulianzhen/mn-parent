@@ -1,5 +1,7 @@
 package ${currentFilePkg};
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Table;
 <#list needImportPacageSet as importPacage>
 import ${importPacage};
 </#list>
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiModelProperty;
 <#if generateSwaggerAnnotation == true>
 @ApiModel(value="${tableDesc}Model",description="${tableDesc}对象数据模型")
 </#if>
+@Table(name="${tableName}")
 public class ${entityName} implements Serializable {
 	private static final long serialVersionUID = 1L;
 <#list entityproPertyIgnoreDel as table>
@@ -30,6 +33,7 @@ public class ${entityName} implements Serializable {
 	@ApiModelProperty(notes = "${table.comments?if_exists}")
 	</#if>
 	</#if>
+	@Column(name="${table.columnName}")
 	private ${table.simpleJavaType} ${table.fieldName};
 </#list>
 	//set get method
