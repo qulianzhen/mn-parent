@@ -24,10 +24,27 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    /**
+     * 登录
+     * @param userName
+     * @param password
+     * @return
+     */
     @PostMapping("login")
     public Message login(String userName,String password){
         LoginSuccessInfoVo loginSuccessInfoVo = loginService.login(userName,password);
         return MessageUtil.successMsg().data(loginSuccessInfoVo);
+    }
+
+    /**
+     * 退出
+     * @param userName
+     * @return
+     */
+    @PostMapping("logout")
+    public Message logout(String userName){
+        loginService.logout(userName);
+        return MessageUtil.successMsg();
     }
 
 }

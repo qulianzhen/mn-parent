@@ -17,4 +17,11 @@ public interface LoginService {
      * @return 登录信息
      */
     LoginSuccessInfoVo login(String username, String password);
+
+    /**
+     * 退出
+     * @param userName
+     * @return
+     */
+    void logout(String userName);
 }

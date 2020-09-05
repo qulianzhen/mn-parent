@@ -4,13 +4,14 @@ import com.mn.commonbean.restful.Message;
 import com.mn.dict.entity.param.SysDictParam;
 import com.mn.dict.service.SysDictService;
 import com.mn.mnutil.MessageUtil;
-import com.mn.mnutil.SnowFlake;
 import com.mn.module.page.PageQuerier;
+import com.mn.sysbusinesscode.service.SysBusinessCodeService;
 import com.mn.util.PageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
     @Autowired
-    private SnowFlake snowFlake;
+    private SysBusinessCodeService sysBusinessCodeService;
 
     /**
      * 查询字典列表[分页]
@@ -66,7 +67,7 @@ public class SysDictController {
     @PostMapping(value = "/save")
     public Message saveSysDict(@RequestBody SysDictParam param){
         if(param!=null &&(param.getId()==null || "".equals(param.getId()))){
-            param.setId(snowFlake.nextId());
+            param.setId(Long.parseLong(sysBusinessCodeService.getNextCode("SYS_DICT")));
             sysDictService.insert(param);
         }else{
             sysDictService.update(param);

@@ -46,9 +46,16 @@ public interface SysUserMapper extends MyMapper<SysUser>{
     */
     void deleteSysUser(List<Long> ids);
     /**
-     * 根据用户名获取操作权限List
+     * 根据用户id获取操作权限List
+     * @param id
+     * @return
+     */
+    List<String> getUrlPermitByUserId(Long id);
+
+    /**
+     * 根据登录名获取用户
      * @param loginName
      * @return
      */
-    List<String> getUrlPermitByUserName(String loginName);
+    SysUser getSysUserByLoginName(String loginName);
 }

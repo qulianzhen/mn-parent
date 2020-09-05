@@ -17,6 +17,7 @@ import com.mn.syspermission.entity.vo.SysPermissionVo;
 import com.mn.syspermission.mapper.SysPermissionMapper;
 import com.mn.syspermission.service.SysPermissionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -69,6 +70,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 
 	@Override
     @Transactional
+	@CacheEvict(cacheNames="MN_USER_PERMISSION",allEntries=true)//无法知道哪个用户受到影响，清除所有权限缓存
     public void update(SysPermissionParam param) {
 		param.setUpdateDate(new Date());
 		sysPermissionMapper.updateSysPermission(PojoConvertUtil.convertPojo(param,SysPermission.class));
@@ -109,6 +111,7 @@ public class SysPermissionServiceImpl implements SysPermissionService{
 	}
 
 	@Override
+	@CacheEvict(cacheNames="MN_USER_PERMISSION",allEntries=true)//无法知道哪个用户受到影响，清除所有权限缓存
 	public void saveRolePermission(List<SysRolePermissionParam> paramList) {
 		if(paramList!=null && !paramList.isEmpty()){
 			SysRolePermissionParam sysRolePermissionParamFirst = paramList.get(0);

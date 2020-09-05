@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.sysbusinesscode.mapper.SysBusinessCodeMapper">
+
+  <sql id="tbl_columns">
+		ID,
+		CODE_TAG,
+		CODE_PREFIXION,
+		CODE_SUFFIX,
+		CURRENT_VAL,
+		CODE_TYPE,
+		CODE_LENGTH,
+		CREATE_DATE,
+		UPDATE_DATE,
+		CODE_DESC
+  </sql>
+
+
+
+    <!-- 查询业务流水号列表  -->
+    <select id="listSysBusinessCode" resultType="SysBusinessCode" parameterType="SysBusinessCodeParam">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_business_code
+        where 1=1
+        <if test='codeTag!=null and codeTag!=""'>
+            and CODE_TAG = #{codeTag}
+        </if>
+    </select>
+
+    <!-- 获取单条业务流水号记录 -->
+    <select id="getSysBusinessCode" resultType="SysBusinessCode" parameterType="Long">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_business_code
+        where ID = #{id}
+    </select>
+
+
+    <!-- 新增业务流水号记录 -->
+    <insert id="insertSysBusinessCode" parameterType="SysBusinessCode">
+        insert into mn_sys_business_code(
+        CODE_TAG,
+		CODE_PREFIXION,
+		CODE_SUFFIX,
+		CURRENT_VAL,
+		CODE_TYPE,
+		CODE_LENGTH,
+		CREATE_DATE,
+		UPDATE_DATE,
+		CODE_DESC
+		) values(
+    	    #{codeTag},
+    	    #{codePrefixion},
+    	    #{codeSuffix},
+    	    #{currentVal},
+    	    #{codeType},
+    	    #{codeLength},
+    	    #{createDate},
+    	    #{updateDate},
+    	    #{codeDesc}
+        )
+    </insert>
+
+    <!-- 修改业务流水号记录 -->
+    <insert id="updateSysBusinessCode" parameterType="SysBusinessCode">
+        update mn_sys_business_code
+        <set>
+          <if test="codeTag != null">
+              CODE_TAG = #{codeTag},
+          </if>
+          <if test="codePrefixion != null">
+              CODE_PREFIXION = #{codePrefixion},
+          </if>
+          <if test="codeSuffix != null">
+              CODE_SUFFIX = #{codeSuffix},
+          </if>
+          <if test="currentVal != null">
+              CURRENT_VAL = #{currentVal},
+          </if>
+          <if test="codeType != null">
+              CODE_TYPE = #{codeType},
+          </if>
+          <if test="codeLength != null">
+              CODE_LENGTH = #{codeLength},
+          </if>
+          <if test="codeDesc != null">
+              CODE_DESC = #{codeDesc},
+          </if>
+        </set>
+        where ID = #{id}
+    </insert>
+
+    <!-- 删除业务流水号记录 -->
+    <delete id="deleteSysBusinessCode" parameterType="java.util.List">
+        delete from  mn_sys_business_code
+        where ID in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+    </delete>
+
+    <!-- 修改当前值， 和修改时间 -->
+    <update id="updateCurrentVal" >
+  	  update mn_sys_business_code set CURRENT_VAL = #{arg0},UPDATE_DATE = now() where ID =  #{arg1}
+    </update>
+</mapper>

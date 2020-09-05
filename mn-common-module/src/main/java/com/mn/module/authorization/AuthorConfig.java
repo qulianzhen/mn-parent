@@ -16,6 +16,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "access")
 public class AuthorConfig {
 
+
     private List<String> accessAnonList;
 
     private List<String> accessAuthcList;

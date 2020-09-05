@@ -7,11 +7,11 @@ import com.mn.mnutil.PojoConvertUtil;
 import com.mn.module.page.PageQuerier;
 import com.mn.sysuser.entity.param.SysUserParam;
 import com.mn.sysuser.entity.po.SysUser;
-import com.mn.sysuser.entity.vo.SysUserVo;
 import com.mn.sysuser.mapper.SysUserMapper;
 import com.mn.sysuser.service.SysUserService;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -76,7 +76,16 @@ public class SysUserServiceImpl implements SysUserService{
 		}
 		return sysUserMapper.getSysUser(id);
 	}
-		
+
+	@Override
+	public SysUser get(String loginName) {
+		if (StringUtils.isEmpty(loginName)) {
+			return null;
+		}
+		return sysUserMapper.getSysUserByLoginName(loginName);
+	}
+
+
 	@Override
 	public void delete(List<Long> ids) {
 	
@@ -90,15 +99,16 @@ public class SysUserServiceImpl implements SysUserService{
 	public SysUser findSysUserByUserName(String userName) {
 		Example example = new Example(SysUser.class);
 		//example.setTableName("MN_SYS_USER");//写上了没用，最后是在Bean上加注解解决的指定表名问题
-		example.selectProperties("id", "password","islock");
+		example.selectProperties("id", "password","islock","nickName");
 		example.createCriteria().andEqualTo("userName",userName)
 				.andEqualTo("isDeleted",0);
 		return sysUserMapper.selectOneByExample(example);
 	}
 
 	@Override
-	public Set<String> getUrlPermitByUserName(String loginName) {
-		List<String> l = sysUserMapper.getUrlPermitByUserName(loginName);
+	@Cacheable(cacheNames="MN_USER_PERMISSION", key="#id.toString()")
+	public Set<String> getUrlPermitByUserId(Long id) {
+		List<String> l = sysUserMapper.getUrlPermitByUserId(id);
 		Set<String> urlPermitSet = new HashSet<String>();
 		String permitUrl = "";
 		for(int i=0,len=l.size();i<len;i++){

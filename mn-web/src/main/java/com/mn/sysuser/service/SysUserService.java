@@ -55,6 +55,13 @@ public interface SysUserService {
 	* @author qlz
 	*/
 	public SysUser get(Long id);
+	/**
+	 * @description 根据登录名查找用户表
+	 * @param loginName  用户登录名
+	 * @return 用户表对象
+	 * @author qlz
+	 */
+	public SysUser get(String loginName);
 	
 	
 	/**
@@ -72,9 +79,9 @@ public interface SysUserService {
 	SysUser findSysUserByUserName(String userName);
 
 	/**
-	 * 根据用户名获取权限Url
-	 * @param username
+	 * 根据用户id获取权限Url
+	 * @param id
 	 * @return
 	 */
-	Set<String> getUrlPermitByUserName(String username);
+	Set<String> getUrlPermitByUserId(Long id);
 }
