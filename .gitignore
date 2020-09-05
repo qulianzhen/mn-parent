@@ -1,5 +1,7 @@
 /target/
 /mnLogs/
+mnLogs/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -35,3 +37,4 @@ mn-mbg-generator/mnLogs/
 mn-common-bean/mnLogs/
 mn-util/mnLogs/
 mn-code-builder/mnLogs/
+mn-common-module/target/
