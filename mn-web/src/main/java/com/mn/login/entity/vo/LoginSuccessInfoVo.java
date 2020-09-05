@@ -17,6 +17,11 @@ public class LoginSuccessInfoVo {
      */
     private String token;
 
+    /**
+     * 昵称
+     */
+    private String nickName;
+
 
     public String getSubject() {
         return subject;
@@ -32,5 +37,13 @@ public class LoginSuccessInfoVo {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

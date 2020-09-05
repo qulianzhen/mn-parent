@@ -11,7 +11,7 @@ public interface AuthenConstants {
     /**
      * 存储在服务端的token前缀
      */
-    public static String USERTOKENPREFIX = "MN:USER:LOGINNAME:";
+    public static String USERTOKENPREFIX = "MN_USER_LOGINNAME:";
     public static String SUPERADMIN = "superadminmn";
 
 }

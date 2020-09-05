@@ -13,6 +13,7 @@ import com.mn.sysrole.entity.po.SysUserRole;
 import com.mn.sysrole.mapper.SysRoleMapper;
 import com.mn.sysrole.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -84,6 +85,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
+	@CacheEvict(cacheNames="MN_USER_PERMISSION",key="#paramList[0].userId.toString()")
 	public void saveUserRole(List<SysUserRoleParam> paramList) {
 		if(paramList!=null && !paramList.isEmpty()){
 			SysUserRoleParam sysUserRoleParamFirst = paramList.get(0);

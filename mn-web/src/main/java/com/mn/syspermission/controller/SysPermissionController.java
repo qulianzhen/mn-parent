@@ -2,8 +2,8 @@ package com.mn.syspermission.controller;
 
 import com.mn.commonbean.restful.Message;
 import com.mn.mnutil.MessageUtil;
-import com.mn.mnutil.SnowFlake;
 import com.mn.module.page.PageQuerier;
+import com.mn.sysbusinesscode.service.SysBusinessCodeService;
 import com.mn.syspermission.entity.param.SysPermissionParam;
 import com.mn.syspermission.entity.param.SysRolePermissionParam;
 import com.mn.syspermission.entity.po.SysPermission;
@@ -33,7 +33,7 @@ public class SysPermissionController{
 	@Autowired
 	private SysPermissionService sysPermissionService;
 	@Autowired
-    private SnowFlake snowFlake;
+	private SysBusinessCodeService sysBusinessCodeService;
 
 
 
@@ -81,7 +81,7 @@ public class SysPermissionController{
 	@PostMapping(value = "/save")
 	public Message saveSysPermission(@RequestBody SysPermissionParam param) {
 		if(param!=null &&(param.getId()==null || "".equals(param.getId()))){
-            param.setId(snowFlake.nextId());
+            param.setId(Long.parseLong(sysBusinessCodeService.getNextCode("PERMISSION")));
 			sysPermissionService.insert(param);
         }else{
 			sysPermissionService.update(param);

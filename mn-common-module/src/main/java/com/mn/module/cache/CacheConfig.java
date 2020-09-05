@@ -3,6 +3,7 @@ package com.mn.module.cache;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -17,6 +18,11 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.lang.reflect.Method;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Description: 缓存管理器（我理解的是缓存管理器其实可以配置多个，但是使用时需要指明用哪个，这里先只用一个）
@@ -28,6 +34,9 @@ import java.lang.reflect.Method;
 @Configuration
 @EnableCaching //开启注解
 public class CacheConfig extends CachingConfigurerSupport {
+
+    @Autowired
+    private CacheProperties cacheProperties;
 
     /**
      * 当不指定缓存的key时，SpringBoot会使用SimpleKeyGenerator(继承自keyGenerator)生成key。（使用方法参数组合生成的一个key。）
@@ -79,7 +88,8 @@ public class CacheConfig extends CachingConfigurerSupport {
      */
     @Bean
     public CacheManager cacheManager(LettuceConnectionFactory factory) {
-       //以锁写入的方式创建RedisCacheWriter对象
+
+        //以锁写入的方式创建RedisCacheWriter对象
         RedisCacheWriter writer = RedisCacheWriter.lockingRedisCacheWriter(factory);
 
         //使用默认缓存配置对象：StringRedisSerializer序列化key，JdkSerializationRedisSerializer序列化value；
@@ -97,10 +107,20 @@ public class CacheConfig extends CachingConfigurerSupport {
         om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jacksonSeial.setObjectMapper(om);
 
-         RedisSerializationContext.SerializationPair pair = RedisSerializationContext.SerializationPair.fromSerializer(jacksonSeial);
-         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
+        RedisSerializationContext.SerializationPair pair = RedisSerializationContext.SerializationPair.fromSerializer(jacksonSeial);
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
 
-        RedisCacheManager cacheManager = new RedisCacheManager(writer, config);
+        /*缓存时间的设置*/
+        //config.entryTtl(Duration.ofMinutes(10)).disableCachingNullValues();//设定默认缓存时间
+        Set<String> cacheNames = new HashSet<>();
+        Map<String,RedisCacheConfiguration> cacheConfig = new HashMap<>();
+        for(Map.Entry<String,Duration> entry : cacheProperties.getInitCaches().entrySet()){
+            cacheNames.add(entry.getKey());
+            cacheConfig.put(entry.getKey(), config.entryTtl(entry.getValue()));
+        }
+
+        RedisCacheManager cacheManager = RedisCacheManager.builder(writer).cacheDefaults(config)
+                .initialCacheNames(cacheNames).withInitialCacheConfigurations(cacheConfig).build();
         return cacheManager;
     }
 

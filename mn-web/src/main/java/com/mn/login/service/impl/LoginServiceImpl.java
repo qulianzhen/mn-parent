@@ -47,10 +47,18 @@ public class LoginServiceImpl implements LoginService {
         }
         LoginSuccessInfoVo loginSuccessInfoVo = new LoginSuccessInfoVo();
         loginSuccessInfoVo.setSubject(username);
+        loginSuccessInfoVo.setNickName(sysUser.getNickName());
         loginSuccessInfoVo.setToken(UUID.randomUUID().toString().replace("-",""));
         //这里如果之前已经存在该key，则会重置value，即用户在电脑A登录，又在客户端B登录，此时，token值变化了，A端会被"挤掉"
         redisUtil.set(AuthenConstants.USERTOKENPREFIX + username,loginSuccessInfoVo.getToken(),TokenConfig.timeout*60);
         return loginSuccessInfoVo;
+    }
+
+    @Override
+    public void logout(String userName) {
+        SysUser sysUser = sysUserService.get(userName);
+        redisUtil.del(AuthenConstants.USERTOKENPREFIX + userName);
+        redisUtil.del("MN_USER_PERMISSION::" + sysUser.getId());
     }
 
     public static void main(String[] args) {
