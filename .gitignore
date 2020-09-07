@@ -1,5 +1,7 @@
 /target/
 /mnLogs/
+mnLogs/
+target/
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
@@ -17,6 +19,7 @@
 *.iml
 *.ipr
 *.class
+*.jar
 
 ### NetBeans ###
 /nbproject/private/
@@ -35,3 +38,4 @@ mn-mbg-generator/mnLogs/
 mn-common-bean/mnLogs/
 mn-util/mnLogs/
 mn-code-builder/mnLogs/
+mn-common-module/target/
