@@ -1,9 +1,11 @@
 package com.mn.dict.controller;
 
 import com.mn.commonbean.restful.Message;
+import com.mn.dict.entity.param.SysDictItemParam;
 import com.mn.dict.entity.param.SysDictParam;
 import com.mn.dict.service.SysDictService;
 import com.mn.mnutil.MessageUtil;
+import com.mn.mnutil.SnowFlake;
 import com.mn.module.page.PageQuerier;
 import com.mn.sysbusinesscode.service.SysBusinessCodeService;
 import com.mn.util.PageUtil;
@@ -31,6 +33,8 @@ public class SysDictController {
     private SysDictService sysDictService;
     @Autowired
     private SysBusinessCodeService sysBusinessCodeService;
+    @Autowired
+    private SnowFlake snowFlake;
 
     /**
      * 查询字典列表[分页]
@@ -58,6 +62,15 @@ public class SysDictController {
         }
         return MessageUtil.successMsg(sysDictService.list(param));
     }
+    /**
+     * 查询字典明细列表[不分页]
+     * @param param 参数
+     * @return
+     */
+    @PostMapping(value = "/listDictItem")
+    public Message listDictItem(@RequestBody SysDictItemParam param){
+        return MessageUtil.successMsg(sysDictService.listDictItem(param.getDictTypeId()));
+    }
 
     /**
      * 保存字典
@@ -73,6 +86,22 @@ public class SysDictController {
             sysDictService.update(param);
         }
         return MessageUtil.successMsg(param.getId());
+    }
+
+
+    /**
+     * 保存字典明细
+     * @param params 保存参数
+     * @return
+     */
+    @PostMapping(value = "/saveSysDictItem")
+    public Message saveSysDictItem(@RequestBody List<SysDictItemParam> params){
+
+        if(params!=null && !params.isEmpty()){
+            params.stream().forEach(e->e.setId(snowFlake.nextId()));
+            sysDictService.saveSysDictItem(params);
+        }
+        return MessageUtil.successMsg();
     }
 
     /**

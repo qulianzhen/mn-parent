@@ -3,8 +3,10 @@ package com.mn.dict.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mn.commonbean.exception.BusinessException;
+import com.mn.dict.entity.param.SysDictItemParam;
 import com.mn.dict.entity.param.SysDictParam;
 import com.mn.dict.entity.po.SysDict;
+import com.mn.dict.entity.po.SysDictItem;
 import com.mn.dict.mapper.SysDictMapper;
 import com.mn.dict.service.SysDictService;
 import com.mn.mnutil.PojoConvertUtil;
@@ -77,10 +79,26 @@ public class SysDictImpl implements SysDictService {
      * @param ids
      */
     @Override
+    @Transactional
     public void delete(List<Long> ids) {
         if(ids == null || ids.isEmpty()){
             throw  new BusinessException("参数为空!");
         }
+        for(Long id:ids){
+            sysDictMapper.deleteSysDictItemByDictTypeId(id);
+        }
         sysDictMapper.deleteSysDict(ids);
+    }
+
+    @Override
+    public List<SysDictItem> listDictItem(Long dictTypeId) {
+        return sysDictMapper.listDictItem(dictTypeId);
+    }
+
+    @Override
+    @Transactional
+    public void saveSysDictItem(List<SysDictItemParam> params) {
+        sysDictMapper.deleteSysDictItemByDictTypeId(params.get(0).getDictTypeId());
+        sysDictMapper.saveSysDictItem(PojoConvertUtil.convertPojos(params,SysDictItem.class));
     }
 }

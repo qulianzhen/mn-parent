@@ -48,4 +48,25 @@
             #{item}
         </foreach>
     </delete>
+    <!--根据字典ID查询字典明细 -->
+    <select id="listDictItem" parameterType="Long" resultType="SysDictItem">
+        select
+          ID as id,DICT_TYPE_ID dictTypeId,
+          QUOTE_NAME quoteName,ITEM_NAME itemName,
+          ITEM_VALUE itemValue,ITEM_ORDER itemOrder
+        from mn_sys_dict_item where DICT_TYPE_ID = #{0}
+    </select>
+
+    <!-- 批量保存字典明细 -->
+    <insert id="saveSysDictItem" parameterType="List" >
+        insert into mn_sys_dict_item(ID,DICT_TYPE_ID,QUOTE_NAME,ITEM_NAME,ITEM_VALUE,ITEM_ORDER)
+        values
+        <foreach collection="list" separator=","  item="item">
+            (#{item.id},#{item.dictTypeId},#{item.quoteName},#{item.itemName},#{item.itemValue},#{item.itemOrder})
+        </foreach>
+    </insert>
+    <!-- 根据字典ID删除字典明细项-->
+    <delete id="deleteSysDictItemByDictTypeId" parameterType="Long">
+      delete from mn_sys_dict_item where  DICT_TYPE_ID = #{0}
+    </delete>
 </mapper>

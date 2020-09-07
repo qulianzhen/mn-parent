@@ -7,13 +7,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 字典主表类
  */
 @Table(name = "MN_SYS_DICT")
-public class SysDict {
+public class SysDict implements Serializable {
 
     @Column(name = "ID")
     @Id

@@ -1,8 +1,10 @@
 package com.mn.dict.service;
 
 import com.github.pagehelper.PageInfo;
+import com.mn.dict.entity.param.SysDictItemParam;
 import com.mn.dict.entity.param.SysDictParam;
 import com.mn.dict.entity.po.SysDict;
+import com.mn.dict.entity.po.SysDictItem;
 import com.mn.module.page.PageQuerier;
 
 import java.util.List;
@@ -47,4 +49,17 @@ public interface SysDictService {
      * @param ids 主键集合
      */
     void delete(List<Long> ids);
+
+    /**
+     * 根据字典ID查询字典项
+     * @param dictTypeId 字典ID
+     * @return
+     */
+    List<SysDictItem> listDictItem(Long dictTypeId);
+
+    /**
+     * 批量保存字典明细
+     * @param params
+     */
+    void saveSysDictItem(List<SysDictItemParam> params);
 }
