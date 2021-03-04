@@ -31,8 +31,8 @@ public class LoginController {
      * @return
      */
     @PostMapping("login")
-    public Message login(String userName,String password){
-        LoginSuccessInfoVo loginSuccessInfoVo = loginService.login(userName,password);
+    public Message login(String userName,String password,String code,String codeId){
+        LoginSuccessInfoVo loginSuccessInfoVo = loginService.login(userName,password,code,codeId);
         return MessageUtil.successMsg().data(loginSuccessInfoVo);
     }
 

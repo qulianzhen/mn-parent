@@ -6,10 +6,19 @@ import com.mn.mnutil.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
+import java.util.HashMap;
+import java.util.Map;
 
 /** 可以看作是Controller层增强处理，这里确实不是AOP的实现
  * @version 1.0
@@ -43,6 +52,53 @@ public class MyControllerAdvice {
     public Message customException(BusinessException e) {
         return MessageUtil.errorMsg(e.getMessage(),Message.BUSINESS_EXCEPTION);
     }
+
+    @ResponseBody
+    //@ResponseStatus(code = HttpStatus.BAD_REQUEST)//这个注解使返回的code成了400了
+    @ExceptionHandler(value = {BindException.class, ValidationException.class, MethodArgumentNotValidException.class})
+    public Message handleParameterVerificationException(Exception e) {
+        LOGGER.error(" handleParameterVerificationException has been invoked", e);
+        Map<String, Object> resultMap = new HashMap<>(4);
+        resultMap.put("code", "100001");
+        String msg = null;
+        /// BindException
+        if (e instanceof BindException) {
+            // getFieldError获取的是第一个不合法的参数(P.S.如果有多个参数不合法的话)
+            FieldError fieldError = ((BindException) e).getFieldError();
+            if (fieldError != null) {
+                msg = fieldError.getDefaultMessage();
+            }
+            /// MethodArgumentNotValidException
+        } else if (e instanceof MethodArgumentNotValidException) {
+            BindingResult bindingResult = ((MethodArgumentNotValidException) e).getBindingResult();
+            // getFieldError获取的是第一个不合法的参数(P.S.如果有多个参数不合法的话)
+            FieldError fieldError = bindingResult.getFieldError();
+            if (fieldError != null) {
+                msg = fieldError.getDefaultMessage();
+            }
+            /// ValidationException 的子类异常ConstraintViolationException
+        } else if (e instanceof ConstraintViolationException) {
+            /*
+             * ConstraintViolationException的e.getMessage()形如
+             *     {方法名}.{参数名}: {message}
+             *  这里只需要取后面的message即可
+             */
+            msg = e.getMessage();
+            if (msg != null) {
+                int lastIndex = msg.lastIndexOf(':');
+                if (lastIndex >= 0) {
+                    msg = msg.substring(lastIndex + 1).trim();
+                }
+            }
+            /// ValidationException 的其它子类异常
+        } else {
+            msg = "处理参数时异常";
+        }
+        return MessageUtil.errorMsg(msg,Message.INVALID_PARAM);
+    }
+
+
+
 
 
     /*全局数据绑定:既可以自定义变量名，也可以直接用Model对象*/

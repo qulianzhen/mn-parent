@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -144,4 +145,17 @@ public class SysPermissionController{
 		List<Long> permissionIds = sysPermissionService.getSysPermissionIdByRoleId(roleId);
 		return MessageUtil.successMsg(permissionIds);
 	}
+
+	/**
+	 * @description 根据角色ID获取多个权限
+	 * @author qlz
+	 * @return 响应对象
+	 */
+	@GetMapping(value = "/getPageEPermitByUserName")
+	public Message getPageEPermitByUserName(HttpServletRequest req) {
+		String userName = req.getHeader("X-SUBJECT");
+		return MessageUtil.successMsg(sysPermissionService.getPageEPermitByUserName(userName));
+	}
+
+
 }

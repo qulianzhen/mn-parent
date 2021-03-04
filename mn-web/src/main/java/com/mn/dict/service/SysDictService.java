@@ -5,6 +5,7 @@ import com.mn.dict.entity.param.SysDictItemParam;
 import com.mn.dict.entity.param.SysDictParam;
 import com.mn.dict.entity.po.SysDict;
 import com.mn.dict.entity.po.SysDictItem;
+import com.mn.dict.entity.vo.SysDictItemSimpleVo;
 import com.mn.module.page.PageQuerier;
 
 import java.util.List;
@@ -62,4 +63,11 @@ public interface SysDictService {
      * @param params
      */
     void saveSysDictItem(List<SysDictItemParam> params);
+
+    /**
+     * 根据唯一标识获取字典项列表
+     * @param dictType
+     * @return
+     */
+    List<SysDictItemSimpleVo> listSysDictItemByKey(String dictType);
 }

@@ -106,9 +106,39 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 
 	@Override
-	@Cacheable(cacheNames="MN_USER_PERMISSION", key="#id.toString()")
+	@Cacheable(cacheNames={"MN_USER_PERMISSION"}, key="#id.toString()")
 	public Set<String> getUrlPermitByUserId(Long id) {
 		List<String> l = sysUserMapper.getUrlPermitByUserId(id);
+		Set<String> urlPermitSet = new HashSet<String>();
+		String permitUrl = "";
+		for(int i=0,len=l.size();i<len;i++){
+			permitUrl = l.get(i);
+			if(permitUrl != null && !permitUrl.trim().equals("")){
+				urlPermitSet.add(permitUrl);
+			}
+		}
+		return urlPermitSet;
+	}
+
+	@Override
+	@Cacheable(cacheNames="MN_USER_PAGE_U_PERMISSION", key="#id.toString()")
+	public Set<String> getOnlyUrlPermitByUserId(Long id) {
+		List<String> l = sysUserMapper.getOnlyUrlPermitByUserId(id);
+		Set<String> urlPermitSet = new HashSet<String>();
+		String permitUrl = "";
+		for(int i=0,len=l.size();i<len;i++){
+			permitUrl = l.get(i);
+			if(permitUrl != null && !permitUrl.trim().equals("")){
+				urlPermitSet.add(permitUrl);
+			}
+		}
+		return urlPermitSet;
+	}
+
+	@Override
+	@Cacheable(cacheNames="MN_USER_PAGE_E_PERMISSION", key="#id.toString()")
+	public Set<String> getPageEPermitByUserId(Long id) {
+		List<String> l = sysUserMapper.getPageEPermitByUserId(id);
 		Set<String> urlPermitSet = new HashSet<String>();
 		String permitUrl = "";
 		for(int i=0,len=l.size();i<len;i++){

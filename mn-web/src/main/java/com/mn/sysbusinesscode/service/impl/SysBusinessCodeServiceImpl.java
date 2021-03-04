@@ -4,10 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mn.commonbean.exception.BusinessException;
 import com.mn.commonbean.exception.BusinessInvalidParamException;
+import com.mn.dict.entity.vo.SysDictItemSimpleVo;
+import com.mn.dict.service.SysDictService;
 import com.mn.mnutil.PojoConvertUtil;
 import com.mn.module.page.PageQuerier;
 import com.mn.sysbusinesscode.entity.param.SysBusinessCodeParam;
 import com.mn.sysbusinesscode.entity.po.SysBusinessCode;
+import com.mn.sysbusinesscode.entity.vo.SysBusinessCodeVo;
 import com.mn.sysbusinesscode.mapper.SysBusinessCodeMapper;
 import com.mn.sysbusinesscode.service.SysBusinessCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,8 @@ import org.springframework.util.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName:     SysBusinessCodeServiceImpl.java
@@ -33,11 +38,18 @@ public class SysBusinessCodeServiceImpl implements SysBusinessCodeService{
  
 	@Autowired
 	private SysBusinessCodeMapper sysBusinessCodeMapper;
+	@Autowired
+	private SysDictService sysDictService;
 	 
 	@Override
-	public PageInfo<SysBusinessCode> listPage(PageQuerier<SysBusinessCodeParam> pageQuerierParam) {
+	public PageInfo<SysBusinessCodeVo> listPage(PageQuerier<SysBusinessCodeParam> pageQuerierParam) {
 		PageHelper.startPage(pageQuerierParam.getPage(),pageQuerierParam.getRows());
-        return new PageInfo<SysBusinessCode>(sysBusinessCodeMapper.listSysBusinessCode(pageQuerierParam.getSearch()));
+		List<SysBusinessCode> businessCodeList = sysBusinessCodeMapper.listSysBusinessCode(pageQuerierParam.getSearch());
+		List<SysBusinessCodeVo> businessCodeVoList = PojoConvertUtil.convertPojos(businessCodeList,SysBusinessCodeVo.class);
+		List<SysDictItemSimpleVo> dictItems = sysDictService.listSysDictItemByKey("businessCodeType");
+		Map<String,String> dictMap = dictItems.stream().collect(Collectors.toMap(SysDictItemSimpleVo::getItemValue,SysDictItemSimpleVo::getItemName));
+		businessCodeVoList.stream().forEach(e->e.setCodeTypeName(dictMap.get(e.getCodeType().toString())));
+        return new PageInfo<SysBusinessCodeVo>(businessCodeVoList);
 	}
 
 	@Override

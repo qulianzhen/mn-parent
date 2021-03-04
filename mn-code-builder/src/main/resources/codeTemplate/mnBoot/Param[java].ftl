@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @version        ${version}
  * @Date           ${currentTime}
  */
-public class ${entityName}Param extends ${entityName} implements Serializable{
+public class ${entityName}Param implements Serializable{
 	private static final long serialVersionUID = 1L;
 	//查询条件...
 }

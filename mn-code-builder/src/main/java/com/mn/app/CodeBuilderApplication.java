@@ -26,7 +26,7 @@ public class CodeBuilderApplication {
 		String version = "v1.0";//版本*/
 
 
-		String modelName = "sysbusinesscode";
+		String modelName = "goods";
 
 		Map<String,String> ftlVsFilePath = new HashMap<>();
 		//ftlVsFilePath.put("Controller[java].ftl","com.mn."+modelName+".controller");
@@ -46,8 +46,8 @@ public class CodeBuilderApplication {
 		config.setFtlVsFilePathMap(ftlVsFilePath);
 
 
-		config.setTableNames(new String[]{"mn_sys_business_code"});
-		config.setEntityNames(new String[]{"SysBusinessCode"});
+		config.setTableNames(new String[]{"mn_goods"});
+		config.setEntityNames(new String[]{"Goods"});
 		config.setIgnoreBeanProperty(new String[]{});
 		config.setSearchColumns(new String[]{});
 

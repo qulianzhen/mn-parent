@@ -104,7 +104,7 @@
         WHERE PERMISSION_TYPE = 0
         AND id IN (
             SELECT PERMISSION_ID
-            FROM SYS_ROLE_PERMISSION
+            FROM MN_SYS_ROLE_PERMISSION
             WHERE ROLE_ID IN (
                     SELECT ROLE_ID
                     FROM MN_SYS_USER_ROLE
@@ -117,7 +117,38 @@
         WHERE MENU_ENABLE = 1 and MENU_URL is not null
         AND id IN (
             SELECT PERMISSION_ID
-            FROM SYS_ROLE_PERMISSION
+            FROM MN_SYS_ROLE_PERMISSION
+            WHERE ROLE_ID IN (
+                    SELECT ROLE_ID
+                    FROM MN_SYS_USER_ROLE
+                    WHERE USER_ID = #{0}
+                )
+        )
+    </select>
+
+    <!-- 根据用户id获得页面元素权限集合 -->
+    <select id="getPageEPermitByUserId" parameterType="Long" resultType="String">
+        SELECT PERMISSION_URL
+        FROM MN_SYS_PERMISSION
+        WHERE PERMISSION_TYPE = 1
+        AND id IN (
+            SELECT PERMISSION_ID
+            FROM MN_SYS_ROLE_PERMISSION
+            WHERE ROLE_ID IN (
+                    SELECT ROLE_ID
+                    FROM MN_SYS_USER_ROLE
+                    WHERE USER_ID = #{0}
+                )
+        )
+    </select>
+    <!-- 根据用户id获得请求url权限集合(不包含菜单) -->
+    <select id="getOnlyUrlPermitByUserId" parameterType="Long" resultType="String">
+        SELECT PERMISSION_URL
+        FROM MN_SYS_PERMISSION
+        WHERE PERMISSION_TYPE = 0
+        AND id IN (
+            SELECT PERMISSION_ID
+            FROM MN_SYS_ROLE_PERMISSION
             WHERE ROLE_ID IN (
                     SELECT ROLE_ID
                     FROM MN_SYS_USER_ROLE

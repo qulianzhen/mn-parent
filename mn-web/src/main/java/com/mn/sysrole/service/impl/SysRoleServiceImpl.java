@@ -85,7 +85,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 
 	@Override
-	@CacheEvict(cacheNames="MN_USER_PERMISSION",key="#paramList[0].userId.toString()")
+	@CacheEvict(cacheNames={"MN_USER_PERMISSION","MN_USER_PAGE_E_PERMISSION","MN_USER_PAGE_U_PERMISSION"},key="#paramList[0].userId.toString()")
 	public void saveUserRole(List<SysUserRoleParam> paramList) {
 		if(paramList!=null && !paramList.isEmpty()){
 			SysUserRoleParam sysUserRoleParamFirst = paramList.get(0);

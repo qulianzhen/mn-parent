@@ -59,4 +59,11 @@ public interface SysDictMapper extends MyMapper<SysDict> {
      * @param dictTypeId
      */
     void deleteSysDictItemByDictTypeId(Long dictTypeId);
+
+    /**
+     * 根据字典key查询字典项目信息
+     * @param dictType
+     * @return
+     */
+    List<SysDictItem> listDictItemByKey(String dictType);
 }

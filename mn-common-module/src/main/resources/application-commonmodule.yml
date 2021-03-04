@@ -30,10 +30,12 @@ access:
   #不需要认证，不需要权限
   accessAnonList:
     - /admin/login
+    - /api/verifyCode/create
   #仅仅需要认证，不需要权限
   accessAuthcList:
     - /sysMenu/sysMenuTree
     - /admin/logout
+    - /api/sysPermission/getPageEPermitByUserName
   #认证+权限，都需要
   accessPermsList:
     - /**
@@ -41,3 +43,6 @@ mncache:
   initCaches:
     #指定每个缓存（名字标志）的到期时间：10m  1h等
     MN_USER_PERMISSION: 24h
+    MN_USER_PAGE_E_PERMISSION: 24h
+    MN_USER_PAGE_U_PERMISSION: 24h
+    MN_USER_DICT: 7d

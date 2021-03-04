@@ -103,12 +103,12 @@
 
     <!-- 根据roleId删除角色绑定 -->
     <delete id="deleteRolePermission" parameterType="Long">
-        delete from sys_role_permission where ROLE_ID = #{roleId}
+        delete from MN_sys_role_permission where ROLE_ID = #{roleId}
     </delete>
 
     <!-- 批量新增角色权限绑定关系 -->
     <insert id="saveRolePermission" parameterType="java.util.List">
-        insert into sys_role_permission(ID,ROLE_ID,PERMISSION_ID,PERMISSION_TYPE)
+        insert into MN_sys_role_permission(ID,ROLE_ID,PERMISSION_ID,PERMISSION_TYPE)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.id},#{item.roleId},#{item.permissionId},#{item.permissionType})
@@ -117,6 +117,6 @@
 
     <!-- 根据用户Id查询所有角色 -->
     <select id="listPermissionByRoleId" parameterType="Long" resultType="Long">
-        select PERMISSION_ID as permissionId from sys_role_permission where ROLE_ID = #{roleId}
+        select PERMISSION_ID as permissionId from MN_sys_role_permission where ROLE_ID = #{roleId}
     </select>
 </mapper>

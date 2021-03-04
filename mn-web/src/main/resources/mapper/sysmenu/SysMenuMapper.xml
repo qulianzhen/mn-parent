@@ -29,7 +29,7 @@
         </if>
         <if test="loginName!=null">
             and ID in (
-                select PERMISSION_ID from sys_role_permission
+                select PERMISSION_ID from mn_sys_role_permission
                 where PERMISSION_TYPE = 2 and ROLE_ID in (
                   select ROLE_ID from mn_sys_user_role where USER_ID = (select ID from mn_sys_user where USER_NAME = #{loginName})
             )

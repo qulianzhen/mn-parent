@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.doubleball.mapper.DoubleBallMapper">
+
+  <sql id="tbl_columns">
+		ID,
+		DB_NO,
+		DB_DATE,
+		DB_RED1,
+		DB_RED2,
+		DB_RED3,
+		DB_RED4,
+		DB_RED5,
+		DB_RED6,
+		DB_BLUE,
+		DB_REMARK
+  </sql>
+
+
+    <!-- 查询双色球历史记录列表  -->
+    <select id="listDoubleBall" resultType="DoubleBall" parameterType="DoubleBallParam">
+        select
+        <include refid="tbl_columns"/>
+        from mn_doubleball
+        where 1=1
+        <if test="dbNo!=null and dbNo !='' ">
+            and DB_NO = #{dbNo}
+        </if>
+        <if test="dbDateStart!=null and dbDateStart !='' ">
+            and DB_DATE &gt;= #{dbDateStart}
+        </if>
+        <if test="dbDateEnd!=null and dbDateEnd !='' ">
+            and DB_DATE &lt;= #{dbDateEnd}
+        </if>
+        order by DB_NO DESC
+    </select>
+
+    <!-- 获取单条双色球历史记录记录 -->
+    <select id="getDoubleBall" resultType="DoubleBall" parameterType="Long">
+        select
+        <include refid="tbl_columns"/>
+        from mn_doubleball
+        where ID = #{id}
+    </select>
+
+
+    <!-- 新增双色球历史记录记录 -->
+    <insert id="insertDoubleBall" parameterType="DoubleBall">
+        insert into mn_doubleball(<include refid="tbl_columns"/>) values(
+    	    #{id},
+    	    #{dbNo},
+    	    #{dbDate},
+    	    #{dbRed1},
+    	    #{dbRed2},
+    	    #{dbRed3},
+    	    #{dbRed4},
+    	    #{dbRed5},
+    	    #{dbRed6},
+    	    #{dbBlue},
+    	    #{dbRemark}
+        )
+    </insert>
+
+    <!-- 修改双色球历史记录记录 -->
+    <insert id="updateDoubleBall" parameterType="DoubleBall">
+        update mn_doubleball
+        <set>
+          <if test="id != null">
+              ID = #{id},
+          </if>
+          <if test="dbNo != null">
+              DB_NO = #{dbNo},
+          </if>
+          <if test="dbDate != null">
+              DB_DATE = #{dbDate},
+          </if>
+          <if test="dbRed1 != null">
+              DB_RED1 = #{dbRed1},
+          </if>
+          <if test="dbRed2 != null">
+              DB_RED2 = #{dbRed2},
+          </if>
+          <if test="dbRed3 != null">
+              DB_RED3 = #{dbRed3},
+          </if>
+          <if test="dbRed4 != null">
+              DB_RED4 = #{dbRed4},
+          </if>
+          <if test="dbRed5 != null">
+              DB_RED5 = #{dbRed5},
+          </if>
+          <if test="dbRed6 != null">
+              DB_RED6 = #{dbRed6},
+          </if>
+          <if test="dbBlue != null">
+              DB_BLUE = #{dbBlue},
+          </if>
+          <if test="dbRemark != null">
+              DB_REMARK = #{dbRemark},
+          </if>
+        </set>
+        where ID = #{id}
+    </insert>
+
+    <!-- 删除双色球历史记录记录 -->
+    <delete id="deleteDoubleBall" parameterType="java.util.List">
+        delete from  mn_doubleball
+        where ID in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+        #{item}
+        </foreach>
+    </delete>
+
+    <!--a-->
+    <select id="queryNextNoBlue" resultType="Map" parameterType="java.lang.Integer">
+        SELECT
+            t1.DB_BLUE dbBlue,count(1) dbBlueCount
+        FROM mn_doubleball t1
+        INNER JOIN (
+            SELECT DB_NO FROM mn_doubleball WHERE DB_BLUE = #{0}
+        ) t2 ON t1.DB_NO = (CAST(t2.DB_NO AS SIGNED) + 1) + ''
+        GROUP BY t1.DB_BLUE
+        ORDER BY dbBlueCount DESC
+    </select>
+</mapper>

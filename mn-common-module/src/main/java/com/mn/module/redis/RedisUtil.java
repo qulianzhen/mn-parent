@@ -81,6 +81,19 @@ public class RedisUtil {
         }
     }
 
+    /**
+     * 删除缓存
+     * @param key 可以传一个值 或多个
+     */
+    @SuppressWarnings("unchecked")
+    public boolean delForResult(String key){
+        boolean isDel = false;
+        if(key!=null&&key.length()>0){
+            return redisTemplate.delete(key);
+        }
+        return isDel;
+    }
+
     //============================String=============================
     /**
      * 普通缓存获取

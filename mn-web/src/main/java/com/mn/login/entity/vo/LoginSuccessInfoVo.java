@@ -1,5 +1,7 @@
 package com.mn.login.entity.vo;
 
+import java.util.List;
+
 /**
  * @Description: (描述)
  * @Author:Mloong
@@ -21,6 +23,8 @@ public class LoginSuccessInfoVo {
      * 昵称
      */
     private String nickName;
+
+    private List<String> pagePers;
 
 
     public String getSubject() {
@@ -45,5 +49,13 @@ public class LoginSuccessInfoVo {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public List<String> getPagePers() {
+        return pagePers;
+    }
+
+    public void setPagePers(List<String> pagePers) {
+        this.pagePers = pagePers;
     }
 }

@@ -8,7 +8,14 @@ server:
     max-threads: 200 #默认值 (tomcat起动的最大线程数，即同时处理的任务个数,超过后会放入等待队列)
     accept-count: 100 #默认值(当tomcat起动的线程数达到最大时，接受排队的请求个数,超过或会拒绝此次请求，返回connection refused)
     uri-encoding: UTF-8
-
+#管理节点配置（http://localhost:54001/actuator）
+management:
+  server:
+    port: 54001
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 spring:
   profiles:
     include: commonmodule
@@ -73,6 +80,29 @@ spring:
         enabled: true
         url-pattern: /*
         exclusions: '*.gif,*.png,*.jpg,*.html,*.js,*.css,*.ico,/druid/*'
+  mail:
+    port: 25
+    username: jxcfsyj163@163.com
+    password: DKNGEGVOUWCSVXWC
+    protocol: smtp
+    default-encoding: utf-8
+    host: smtp.163.com
+    properties:
+            mail:
+                smtp:
+                    auth: true
+                    #STARTTLS is a way to take an existing insecure connection and upgrade it to a secure connection using SSL/TLS. Note that despite having TLS in the name,
+                    #STARTTLS doesn't mean you have to use TLS, you can use SSL.
+                    starttls:
+                        enable: true
+                        required: true
+                    timeout: 25000
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode（9200端口是http查询使用的。9300集群使用。这里使用9300.）
+      cluster-nodes: 127.0.0.1:9300
+      #client-transport-sniff: false
 #测试属性赋值
 person:
   lastName: zhangsan
@@ -144,6 +174,7 @@ token:
   secret: 90kpo1?_230_a451x
   #userflg
   userflg: X-SUBJECT
+
 
 
 

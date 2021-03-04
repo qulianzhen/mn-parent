@@ -3,6 +3,7 @@ package com.mn.dict.controller;
 import com.mn.commonbean.restful.Message;
 import com.mn.dict.entity.param.SysDictItemParam;
 import com.mn.dict.entity.param.SysDictParam;
+import com.mn.dict.entity.vo.SysDictItemSimpleVo;
 import com.mn.dict.service.SysDictService;
 import com.mn.mnutil.MessageUtil;
 import com.mn.mnutil.SnowFlake;
@@ -12,6 +13,7 @@ import com.mn.util.PageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,7 +80,7 @@ public class SysDictController {
      * @return
      */
     @PostMapping(value = "/save")
-    public Message saveSysDict(@RequestBody SysDictParam param){
+    public Message saveSysDict(@Validated @RequestBody SysDictParam param){
         if(param!=null &&(param.getId()==null || "".equals(param.getId()))){
             param.setId(Long.parseLong(sysBusinessCodeService.getNextCode("SYS_DICT")));
             sysDictService.insert(param);
@@ -102,6 +104,18 @@ public class SysDictController {
             sysDictService.saveSysDictItem(params);
         }
         return MessageUtil.successMsg();
+    }
+
+    /**
+     * 根据KEY查询字典明细
+     * @param dictType 字典类型
+     * @return
+     */
+    @PostMapping(value = "/listSysDictItemByKey")
+    public Message listSysDictItemByKey(String dictType){
+
+        List<SysDictItemSimpleVo> list = sysDictService.listSysDictItemByKey(dictType);
+        return MessageUtil.successMsg(list);
     }
 
     /**

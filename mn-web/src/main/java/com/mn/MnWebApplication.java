@@ -23,6 +23,8 @@ mn-web模块的包名：com.mn.web
 public class MnWebApplication {
 
     public static void main(String[] args) {
+        //由于es的netty-transport版本冲突导致的，Elasticsearch 和 Redis 底层都使用到了 Netty , 在项目启动时会冲突。
+        System.setProperty("es.set.netty.runtime.available.processors", "false");
         SpringApplication.run(MnWebApplication.class, args);
     }
 

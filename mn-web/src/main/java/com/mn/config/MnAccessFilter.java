@@ -91,7 +91,7 @@ public class MnAccessFilter implements Filter {
                 //判断是否有访问该url的权限
                 //这个方法需要配合缓存注解，会先从缓存中取，取不到时，再从数据库取
                 SysUser sysUser = sysUserService.get(loginName);
-                Set<String> userPermitSet =  sysUserService.getUrlPermitByUserId(sysUser.getId());
+                Set<String> userPermitSet =  sysUserService.getOnlyUrlPermitByUserId(sysUser.getId());
                 if(userPermitSet == null || !userPermitSet.contains(requestUrl)){
                     createErrorMsg(MessageUtil.codeMsg(403),servletResponse);
                     return;

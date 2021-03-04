@@ -373,10 +373,10 @@ INSERT INTO `mn_sys_user_role` VALUES ('491765827662647298', '491406396668121088
 INSERT INTO `mn_sys_user_role` VALUES ('495795308551344128', '1', '2');
 
 -- ----------------------------
--- Table structure for sys_role_permission
+-- Table structure for mn_sys_role_permission
 -- ----------------------------
-DROP TABLE IF EXISTS `sys_role_permission`;
-CREATE TABLE `sys_role_permission` (
+DROP TABLE IF EXISTS `mn_sys_role_permission`;
+CREATE TABLE `mn_sys_role_permission` (
   `ID` bigint(20) NOT NULL COMMENT '主键',
   `ROLE_ID` bigint(20) NOT NULL COMMENT '角色ID',
   `PERMISSION_ID` bigint(20) NOT NULL COMMENT '权限ID',
@@ -385,10 +385,10 @@ CREATE TABLE `sys_role_permission` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='角色-权限对应表';
 
 -- ----------------------------
--- Records of sys_role_permission
+-- Records of mn_sys_role_permission
 -- ----------------------------
-INSERT INTO `sys_role_permission` VALUES ('495433440443895808', '488903342047760384', '1', '2');
-INSERT INTO `sys_role_permission` VALUES ('495433440443895809', '488903342047760384', '4', '2');
-INSERT INTO `sys_role_permission` VALUES ('495433440443895810', '488903342047760384', '2222222222222', '0');
-INSERT INTO `sys_role_permission` VALUES ('495795274309046272', '2', '3', '2');
-INSERT INTO `sys_role_permission` VALUES ('495795274309046273', '2', '5', '2');
+INSERT INTO `mn_sys_role_permission` VALUES ('495433440443895808', '488903342047760384', '1', '2');
+INSERT INTO `mn_sys_role_permission` VALUES ('495433440443895809', '488903342047760384', '4', '2');
+INSERT INTO `mn_sys_role_permission` VALUES ('495433440443895810', '488903342047760384', '2222222222222', '0');
+INSERT INTO `mn_sys_role_permission` VALUES ('495795274309046272', '2', '3', '2');
+INSERT INTO `mn_sys_role_permission` VALUES ('495795274309046273', '2', '5', '2');

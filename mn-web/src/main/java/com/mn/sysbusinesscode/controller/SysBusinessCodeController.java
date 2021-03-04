@@ -1,6 +1,7 @@
 package com.mn.sysbusinesscode.controller;
 
 import com.mn.commonbean.restful.Message;
+import com.mn.mail.service.MailService;
 import com.mn.mnutil.MessageUtil;
 import com.mn.module.page.PageQuerier;
 import com.mn.sysbusinesscode.entity.param.SysBusinessCodeParam;
@@ -29,6 +30,8 @@ public class SysBusinessCodeController{
 	
 	@Autowired
 	private SysBusinessCodeService sysBusinessCodeService;
+	@Autowired
+	private MailService mailService;
 
 	/**
 	 * @description 查询业务流水号列表-分页
@@ -42,7 +45,22 @@ public class SysBusinessCodeController{
 		if(param == null){
 			param = new PageQuerier<>();
 		}
-        return PageUtil.easyUIPageSuccessMsg(sysBusinessCodeService.listPage(param));
+		/*MailIndexEs es = new MailIndexEs();
+		es.setContent("12321321321321");
+		es.setCreateTime("20120908");
+		es.setDbid("21354");
+		es.setExceptionName("NPE");
+		es.setPhone("150336521458");
+		mailService.save(es);*/
+
+//		Pageable able = PageRequest.of(1,10);
+//		Page<MailIndexEs> aa = mailService.find("150336521458",able);
+//		System.out.println("=====================================");
+//		System.out.println(aa);
+//		System.out.println(aa.getContent());
+//		System.out.println(aa.getContent().get(0).getExceptionName());
+
+		return PageUtil.easyUIPageSuccessMsg(sysBusinessCodeService.listPage(param));
 	}
 
 	/**

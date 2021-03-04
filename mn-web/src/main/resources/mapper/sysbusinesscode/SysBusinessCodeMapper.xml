@@ -26,6 +26,9 @@
         <if test='codeTag!=null and codeTag!=""'>
             and CODE_TAG = #{codeTag}
         </if>
+        <if test='codeDesc!=null and codeDesc!=""'>
+            and CODE_DESC like CONCAT('%',#{codeDesc},'%')
+        </if>
     </select>
 
     <!-- 获取单条业务流水号记录 -->

@@ -7,11 +7,12 @@ import com.mn.menu.entity.vo.SysMenuTreeVo;
 import com.mn.menu.entity.vo.SysMenuVo;
 import com.mn.menu.mapper.SysMenuMapper;
 import com.mn.menu.service.SysMenuService;
-import com.mn.mnutil.SnowFlake;
 import com.mn.module.authentication.AuthenConstants;
+import com.mn.sysbusinesscode.service.SysBusinessCodeService;
 import com.mn.syspermission.entity.po.SysPermission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
@@ -19,9 +20,9 @@ import java.util.*;
 @Service("sysMenuService")
 public class SysMenuImpl implements SysMenuService {
     @Autowired
-    private SnowFlake snowFlake;
-    @Autowired
     private SysMenuMapper sysMenuMapper;
+    @Autowired
+    private SysBusinessCodeService sysBusinessCodeService;
 
     @Override
     public List<SysMenuTreeVo> listTree(SysMenuParam sysMenuParam) {
@@ -39,9 +40,10 @@ public class SysMenuImpl implements SysMenuService {
     }
 
     @Override
-    public void save(SysMenu sysMenu) {
+    @Transactional
+    public synchronized void save(SysMenu sysMenu) {
         if(sysMenu.getId() == null){
-            sysMenu.setId(snowFlake.nextId());
+            sysMenu.setId(Long.parseLong(sysBusinessCodeService.getNextCode("PERMISSION")));
             Date nowDate = new Date();
             sysMenu.setCreateDate(nowDate);
             sysMenu.setUpdateDate(nowDate);

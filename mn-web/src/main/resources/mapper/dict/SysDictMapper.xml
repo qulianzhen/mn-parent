@@ -17,6 +17,9 @@
         <if test='dictDesc!=null and dictDesc!=""'>
             and DICT_DESC like concat('%', #{dictDesc},'%')
         </if>
+        <if test='notThisIdFlag!=null and notThisIdFlag==1'>
+            and ID &lt;&gt; #{id}
+        </if>
     </select>
 
     <!-- 获取单条字典记录 -->
@@ -55,6 +58,15 @@
           QUOTE_NAME quoteName,ITEM_NAME itemName,
           ITEM_VALUE itemValue,ITEM_ORDER itemOrder
         from mn_sys_dict_item where DICT_TYPE_ID = #{0}
+    </select>
+
+    <!--根据字典类型key查询字典明细 -->
+    <select id="listDictItemByKey" parameterType="String" resultType="SysDictItem">
+        select
+          ID as id,DICT_TYPE_ID dictTypeId,
+          QUOTE_NAME quoteName,ITEM_NAME itemName,
+          ITEM_VALUE itemValue,ITEM_ORDER itemOrder
+        from mn_sys_dict_item where DICT_TYPE_ID = (select ID from MN_SYS_DICT where DICT_TYPE = #{0})
     </select>
 
     <!-- 批量保存字典明细 -->

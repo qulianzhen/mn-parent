@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mn.sysloginlog.mapper.SysLoginlogMapper">
+
+  <sql id="tbl_columns">
+		ID,
+		LOGINLOG_USER_NAME,
+		LOGINLOG_IP,
+		LOGINLOG_DATE
+  </sql>
+
+
+    <!-- 查询登录日志列表  -->
+    <select id="listSysLoginlog" resultType="SysLoginlog" parameterType="SysLoginlogParam">
+        select
+        <include refid="tbl_columns"/>
+        from mn_sys_loginlog
+        where 1=1
+        <if test='loginlogUserName!=null and loginlogUserName!=""'>
+            and LOGINLOG_USER_NAME = #{loginlogUserName}
+        </if>
+        <if test='startTime!=null and startTime!=""'>
+            and DATE_FORMAT(LOGINLOG_DATE,'%Y-%m-%d') &gt;= #{startTime}
+        </if>
+        <if test='endTime!=null and endTime!=""'>
+            and DATE_FORMAT(LOGINLOG_DATE,'%Y-%m-%d') &lt;= #{endTime}
+        </if>
+        order by LOGINLOG_DATE desc
+    </select>
+
+    <!-- 新增登录日志记录 -->
+    <insert id="insertSysLoginlog" parameterType="SysLoginlog">
+        insert into mn_sys_loginlog(<include refid="tbl_columns"/>) values(
+    	    #{id},
+    	    #{loginlogUserName},
+            #{loginlogIp},
+    	    #{loginlogDate}
+        )
+    </insert>
+
+</mapper>

@@ -84,4 +84,18 @@ public interface SysUserService {
 	 * @return
 	 */
 	Set<String> getUrlPermitByUserId(Long id);
+
+	/**
+	 * 根据用户id获取权限Url-不包含菜单
+	 * @param id
+	 * @return
+	 */
+	Set<String> getOnlyUrlPermitByUserId(Long id);
+
+	/**
+	 * 根据用户id获取权限页面元素
+	 * @param id
+	 * @return
+	 */
+	Set<String> getPageEPermitByUserId(Long id);
 }

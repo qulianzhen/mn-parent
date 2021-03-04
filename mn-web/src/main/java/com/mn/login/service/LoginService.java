@@ -14,9 +14,11 @@ public interface LoginService {
      * 用户登录
      * @param username 用户名
      * @param password 密码
+     * @param code 验证码
+     * @param codeId 验证码标志
      * @return 登录信息
      */
-    LoginSuccessInfoVo login(String username, String password);
+    LoginSuccessInfoVo login(String username, String password,String code,String codeId);
 
     /**
      * 退出

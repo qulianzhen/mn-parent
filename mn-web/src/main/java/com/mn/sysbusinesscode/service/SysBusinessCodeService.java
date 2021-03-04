@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.mn.module.page.PageQuerier;
 import com.mn.sysbusinesscode.entity.param.SysBusinessCodeParam;
 import com.mn.sysbusinesscode.entity.po.SysBusinessCode;
+import com.mn.sysbusinesscode.entity.vo.SysBusinessCodeVo;
+
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ public interface SysBusinessCodeService {
 	* @return
 	* @author qlz
 	*/
-	public PageInfo<SysBusinessCode> listPage(PageQuerier<SysBusinessCodeParam> pageQuerierParam);
+	public PageInfo<SysBusinessCodeVo> listPage(PageQuerier<SysBusinessCodeParam> pageQuerierParam);
 
 	/**
 	* @description 非分页查询业务流水号

@@ -58,4 +58,17 @@ public interface SysUserMapper extends MyMapper<SysUser>{
      * @return
      */
     SysUser getSysUserByLoginName(String loginName);
+
+    /**
+     * 根据用户id获取页面元素权限List
+     * @param id
+     * @return
+     */
+    List<String> getPageEPermitByUserId(Long id);
+    /**
+     * 根据用户id获取请求url的权限List
+     * @param id
+     * @return
+     */
+    List<String> getOnlyUrlPermitByUserId(Long id);
 }

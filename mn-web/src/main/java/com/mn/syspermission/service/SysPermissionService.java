@@ -92,4 +92,11 @@ public interface SysPermissionService {
 	 * @return
 	 */
 	List<Long> getSysPermissionIdByRoleId(Long roleId);
+
+	/**
+	 * 根据用户登录名获取页面元素权限
+	 * @param userName
+	 * @return
+	 */
+    List<String> getPageEPermitByUserName(String userName);
 }
