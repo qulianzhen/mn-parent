@@ -11,7 +11,7 @@
 
     <properties>
         <spring.boot.starter.data.redis.version>2.1.1.RELEASE</spring.boot.starter.data.redis.version>
-        <jackson.databind.version>2.9.10.5</jackson.databind.version>
+        <jackson.databind.version>2.9.10.7</jackson.databind.version>
         <commons.pool2.version>2.6.0</commons.pool2.version>
     </properties>
 
