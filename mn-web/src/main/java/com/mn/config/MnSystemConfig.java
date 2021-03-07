@@ -22,6 +22,8 @@ public class MnSystemConfig {
 
     public static int verificationCodeStyle;
 
+    public static String uploadTarget;
+
     @Value("${mn.system.version}")
     public  void setVersion(String version) {
         MnSystemConfig.version = version;
@@ -30,6 +32,11 @@ public class MnSystemConfig {
     @Value("${login.verificationCodeStyle}")
     public  void setVerificationCodeStyle(int verificationCodeStyle) {
         MnSystemConfig.verificationCodeStyle = verificationCodeStyle;
+    }
+
+    @Value("${upload.target}")
+    public  void setUploadTarget(String uploadTarget) {
+        MnSystemConfig.uploadTarget = uploadTarget;
     }
 
 }

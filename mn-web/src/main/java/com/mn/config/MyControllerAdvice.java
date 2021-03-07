@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
@@ -51,6 +52,12 @@ public class MyControllerAdvice {
     @ExceptionHandler(BusinessException.class)
     public Message customException(BusinessException e) {
         return MessageUtil.errorMsg(e.getMessage(),Message.BUSINESS_EXCEPTION);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public Message customException(MaxUploadSizeExceededException e) {
+        return MessageUtil.errorMsg("文件过大!",Message.BUSINESS_EXCEPTION);
     }
 
     @ResponseBody

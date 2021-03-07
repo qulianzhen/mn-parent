@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -103,5 +104,22 @@ public class GoodsController{
 	public Message getGoods(Long id) {
 		Goods goods = goodsService.get(id);
 		return MessageUtil.successMsg(goods);
+	}
+	 /**
+	* @description 获取新的商品编号
+	* @author qlz
+	* @return 响应对象
+	*/
+	@GetMapping(value = "/getNewGoodsNo")
+	public Message getNewGoodsNo() {
+		String no = goodsService.getNewGoodsNo();
+		return MessageUtil.successMsg("OK",no);
+	}
+
+	@PostMapping(value = "/fileUpload")
+	public Message fileUpload(@RequestParam(value = "file1",required = false) MultipartFile file1,
+							  @RequestParam(value = "file2",required = false) MultipartFile file2,
+							  GoodsParam param){
+		return MessageUtil.successMsg("OK",goodsService.fileUpload(new MultipartFile[]{file1,file2},param));
 	}
 }

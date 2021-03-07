@@ -1,9 +1,11 @@
 package com.mn.goods.service;
 
 import com.github.pagehelper.PageInfo;
-import com.mn.module.page.PageQuerier;
 import com.mn.goods.entity.param.GoodsParam;
 import com.mn.goods.entity.po.Goods;
+import com.mn.module.page.PageQuerier;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 /**
@@ -61,4 +63,18 @@ public interface GoodsService {
 	* @author qlz
 	*/
 	public void delete(List<Long> ids);
+
+	/**
+	 * 上传图片，保存商品
+	 * @param multipartFiles
+	 * @param param
+	 * @return
+	 */
+    List<String> fileUpload(MultipartFile[] multipartFiles, GoodsParam param);
+
+	/**
+	 * 获取商品新的编号
+	 * @return
+	 */
+	String getNewGoodsNo();
 }

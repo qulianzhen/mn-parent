@@ -26,7 +26,7 @@ public class FileUtil {
      *
      * @param filePath 文件路径
      */
-    public static void createFile(String filePath) {
+    public static File createFile(String filePath) {
         try {
             File f = new File(filePath);
             if (!f.getParentFile().exists()) {
@@ -39,6 +39,7 @@ public class FileUtil {
                 //f.delete();
                 //f.createNewFile();
             }
+            return f;
         } catch (Exception e) {
             throw new RuntimeException("创建文件失败！", e);
         }
